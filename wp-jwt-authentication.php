@@ -35,10 +35,16 @@ class WP_JWT_Authentication {
     add_filter( 'determine_current_user', array($this, 'rest_jwt_auth_handler'), 20 );
   }
 
-  function rest_jwt_auth_handler() {
+  function rest_jwt_auth_handler($user) {
     $jwt_functions = new JWT_Functions();
 
-    return $jwt_functions->validate_token();
+    $jwt_return = $jwt_functions->validate_token();
+
+    if(!$jwt_return) {
+      return $user;
+    }
+
+    return $jwt_return;
   }
 
 }
