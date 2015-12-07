@@ -1,0 +1,6 @@
+{
+    "require": {
+        "firebase/php-jwt": "^3.0",
+        "zendframework/zend-http": "~2.3"
+    }
+}
