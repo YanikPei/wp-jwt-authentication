@@ -39,15 +39,12 @@ class JWT_Functions {
       $expire     = $notBefore + 86400;
       $serverName = get_bloginfo('url');
 
-      /*
-       * Create the token as an array
-       */
       $data = [
-          'iat'  => $issuedAt,         // Issued at: time when the token was generated
-          'jti'  => $tokenId,          // Json Token Id: an unique identifier for the token
-          'iss'  => $serverName,       // Issuer
-          'nbf'  => $notBefore,        // Not before
-          'exp'  => $expire,           // Expire
+          'iat'  => $issuedAt,
+          'jti'  => $tokenId,
+          'iss'  => $serverName,
+          'nbf'  => $notBefore,
+          'exp'  => $expire,
           'data' => [
               'userId'   => $user->ID,
               'userName' => $username,
@@ -96,20 +93,13 @@ class JWT_Functions {
     if ( $request->isGet() || $request->isPost() ) {
       $authHeader = $request->getHeader( 'authorization' );
 
-      /*
-       * Look for the 'authorization' header
-       */
       if ( $authHeader ) {
-        /*
-         * Extract the jwt from the Bearer
-         */
+
         list( $jwt ) = sscanf( $authHeader->toString(), 'Authorization: Bearer %s' );
 
         if ( $jwt ) {
           try {
-            /*
-             * decode the jwt using the key from config
-             */
+
             $secretKey = base64_decode( JWT_SECRET );
 
             $token = JWT::decode( $jwt, $secretKey, array('HS256') );
