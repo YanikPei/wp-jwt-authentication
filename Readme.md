@@ -30,7 +30,7 @@ If you are using WordPress 4.4 you don't have to install WP-API, because it's in
 
 ## Using the plugin
 
-After installing the plugin, a new enpoint is added to your wp-rest-api: `/wp-json/wp-jwt/v1/login`
+After installing the plugin, a new endpoint is added to your wp-rest-api: `/wp-json/wp-jwt/v1/login`
 
 In order to get a token for a user, you have to make a POST-request to this endpoint by passing a username and password. If the combination is correct you will receive the token and its expiration timestamp.
 
