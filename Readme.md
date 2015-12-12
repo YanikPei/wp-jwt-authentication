@@ -23,7 +23,7 @@ without dealing with OAuth. The server creates a unique token for a user which i
 ## Requirements
 
 * WordPress 4.3
-* WP-API v2 beta-8
+* WP-API v2 beta-5
 
 If you are using WordPress 4.4 you don't have to install WP-API, because it's in core already!
 
