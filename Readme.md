@@ -20,6 +20,14 @@ without dealing with OAuth. The server creates a unique token for a user which i
 * That's it!
 
 
+## Requirements
+
+* WordPress 4.3
+* WP-API v2 beta-8
+
+If you are using WordPress 4.4 you don't have to install WP-API, because it's in core already!
+
+
 ## Using the plugin
 
 After installing the plugin, a new enpoint is added to your wp-rest-api: `/wp-json/wp-jwt/v1/login`
