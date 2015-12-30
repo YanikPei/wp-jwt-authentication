@@ -35,7 +35,7 @@ class JWT_Functions {
 
       $tokenId    = base64_encode( mcrypt_create_iv(32) );
       $issuedAt   = time();
-      $notBefore  = $issuedAt + 10;
+      $notBefore  = $issuedAt;
       $expire     = $notBefore + 86400;
       $serverName = get_bloginfo('url');
 

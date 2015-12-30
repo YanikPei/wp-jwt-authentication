@@ -30,17 +30,17 @@ class WP_JWT_Authentication {
     /**
       * Require composer autoload to load necessary classes.
     */
-    require_once WP_JWT_PLUGIN_DIR.'/vendor/autoload.php';
+    require_once WP_JWT_PLUGIN_DIR.'vendor/autoload.php';
 
     /**
       * Require jwt-functions to use them in this plugin.
     */
-    require_once WP_JWT_PLUGIN_DIR.'/inc/class-jwt-functions.php';
+    require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-functions.php';
 
     /**
       * Require jwt-login-endpoint to register endpoint.
     */
-    require_once WP_JWT_PLUGIN_DIR.'/inc/class-jwt-login-endpoint.php';
+    require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-login-endpoint.php';
   }
 
   /**
