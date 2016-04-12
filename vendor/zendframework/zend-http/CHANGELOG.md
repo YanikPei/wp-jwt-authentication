@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.5.4 - 2016-02-04
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#42](https://github.com/zendframework/zend-http/pull/42) updates dependencies
+  to ensure it can work with PHP 5.5+ and 7.0+, as well as zend-stdlib
+  2.5+/3.0+.
+
 ## 2.5.3 - 2015-09-14
 
 ### Added

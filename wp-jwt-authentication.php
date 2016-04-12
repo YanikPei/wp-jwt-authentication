@@ -12,6 +12,15 @@ defined( 'ABSPATH' ) or die( 'No!' );
 define( 'WP_JWT_PLUGIN_DIR', plugin_dir_path(__FILE__) );
 define( 'WP_JWT_ENDPOINT_NAMESPACE', 'wp-jwt/v1' );
 
+/**
+  * Require composer autoload to load necessary classes.
+*/
+if (!file_exists(WP_JWT_PLUGIN_DIR . '/vendor/autoload.php')) {
+  throw new Error('Please execute `composer install` in ' . WP_JWT_PLUGIN_DIR . ' and try again! | ');
+} else {
+  require_once WP_JWT_PLUGIN_DIR . '/vendor/autoload.php';
+}
+
 class WP_JWT_Authentication {
 
   public function __construct() {
@@ -27,11 +36,9 @@ class WP_JWT_Authentication {
    * @return void
    */
   function load_classes() {
-    /**
-      * Require composer autoload to load necessary classes.
-    */
-    require_once WP_JWT_PLUGIN_DIR.'vendor/autoload.php';
 
+    require_once WP_JWT_PLUGIN_DIR.'config.php';
+    
     /**
       * Require jwt-functions to use them in this plugin.
     */

@@ -11,6 +11,7 @@ namespace Zend\Validator;
 
 use Countable;
 use Zend\Stdlib\PriorityQueue;
+use Zend\ServiceManager\ServiceManager;
 
 class ValidatorChain implements
     Countable,
@@ -66,7 +67,7 @@ class ValidatorChain implements
     public function getPluginManager()
     {
         if (!$this->plugins) {
-            $this->setPluginManager(new ValidatorPluginManager());
+            $this->setPluginManager(new ValidatorPluginManager(new ServiceManager));
         }
         return $this->plugins;
     }
@@ -280,7 +281,7 @@ class ValidatorChain implements
     /**
      * Get all the validators
      *
-     * @return PriorityQueue
+     * @return array
      */
     public function getValidators()
     {

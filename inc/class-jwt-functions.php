@@ -22,49 +22,39 @@ class JWT_Functions {
    *
    * @since 4.3.0
    *
-   * @param string $username The username of the current user.
-   * @param string $password The password of the current user.
    * @return array|WP_Error Unencoded array with the token and expiration-timestamp
    *  when credentials are valid, error when they are invalid.
    */
-  function create_token( $username, $password ) {
+  function create_token( $user_id ) {
 
-    $user = get_user_by( 'login', $username );
+    $tokenId    = base64_encode( mcrypt_create_iv(32) );
+    $issuedAt   = time();
+    $notBefore  = $issuedAt;
+    $expire     = $notBefore + 86400;
+    $serverName = get_bloginfo('url');
 
-    if ( $user && wp_check_password( $password, $user->data->user_pass, $user->ID ) ) {
+    $data = [
+        'iat'  => $issuedAt,
+        'jti'  => $tokenId,
+        'iss'  => $serverName,
+        'nbf'  => $notBefore,
+        'exp'  => $expire,
+        'data' => [
+            'userId'   => $user_id
+        ]
+    ];
 
-      $tokenId    = base64_encode( mcrypt_create_iv(32) );
-      $issuedAt   = time();
-      $notBefore  = $issuedAt;
-      $expire     = $notBefore + 86400;
-      $serverName = get_bloginfo('url');
+    $secretKey = base64_decode( JWT_SECRET );
 
-      $data = [
-          'iat'  => $issuedAt,
-          'jti'  => $tokenId,
-          'iss'  => $serverName,
-          'nbf'  => $notBefore,
-          'exp'  => $expire,
-          'data' => [
-              'userId'   => $user->ID,
-              'userName' => $username,
-          ]
-      ];
+    $jwt = JWT::encode(
+      $data,
+      $secretKey,
+      'HS256'
+    );
 
-      $secretKey = base64_decode( JWT_SECRET );
+    $unencodedArray = ['jwt' => $jwt, 'expire' => $expire, 'userid' => $user_id];
 
-      $jwt = JWT::encode(
-        $data,
-        $secretKey,
-        'HS256'
-      );
-
-      $unencodedArray = ['jwt' => $jwt, 'expire' => $expire, 'userid' => $user->ID];
-
-      return $unencodedArray;
-    } else {
-      return new WP_Error( 'credentials_invalid', __( 'Username/Password combination is invalid', 'wp_jwt_authentication' ) );
-    }
+    return $unencodedArray;
   }
 
   /**

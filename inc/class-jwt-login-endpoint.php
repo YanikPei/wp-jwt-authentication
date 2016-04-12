@@ -27,15 +27,10 @@ class JWT_Login_Endpoint {
    */
   function register() {
     register_rest_route( WP_JWT_ENDPOINT_NAMESPACE, '/login', array(
-        'methods' => 'POST',
+        'methods' => 'GET',
         'callback' => array($this, 'action'),
         'args' => array(
-          'username' => array(
-            'required' => true
-          ),
-          'password' => array(
-            'required' => true
-          ),
+
         )
     ) );
   }
@@ -51,15 +46,59 @@ class JWT_Login_Endpoint {
    * @return array The token and expiration-timestamp
    */
   function action(WP_REST_Request $request) {
+    $return = null;
 
-    $username = $request['username'];
-    $password = $request['password'];
+    if( isset($request['method']) ) { // if user wants to login by social-media-account
 
-    $jwt_functions = new JWT_Functions();
+      switch($request['method']) {
+        case 'facebook':
+          $return = $this->handle_facebook($request);
+          break;
+        default:
+          $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
+      }
+    } else { // if user wants to login by username/password
+      $username = $request['username'];
+      $password = $request['password'];
 
-    $token = $jwt_functions->create_token( $username, $password );
+      $jwt_functions = new JWT_Functions();
 
-    return $token;
+      $user = get_user_by( 'login', $username );
+
+      if ( $user && wp_check_password( $password, $user->data->user_pass, $user->ID ) ) {
+        $return = $jwt_functions->create_token( $user->ID );
+      } else {
+        return new WP_Error( 'credentials_invalid', __( 'Username/Password combination is invalid', 'wp_jwt_authentication' ) );
+      }
+
+
+    }
+
+    return $return;
+
+  }
+
+  private function handle_facebook($request) {
+    if( isset($request['error']) ) {
+      return new WP_Error('gb_error', 'FB-Error: '.$request['error_description'].' ('.$request['error_reason'].')');
+    }
+
+    $token = null;
+    $code = null;
+
+    require_once WP_JWT_PLUGIN_DIR.'/inc/social/JWT_Facebook_Login.php';
+
+    if( isset($request['token']) ) {
+      $token = $request['token'];
+    }
+    if( isset($request['code']) ) {
+      $code = $request['code'];
+    }
+
+    $facebook_login = new JWT_Facebook_Login($token, $code);
+
+    return $facebook_login->create_jwt_token();
+
 
   }
 
