@@ -59,7 +59,7 @@ class JWT_Functions {
         'HS256'
       );
 
-      $unencodedArray = ['jwt' => $jwt, 'expire' => $expire];
+      $unencodedArray = ['jwt' => $jwt, 'expire' => $expire, 'userid' => $user->ID];
 
       return $unencodedArray;
     } else {
