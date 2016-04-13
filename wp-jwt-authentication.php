@@ -38,7 +38,7 @@ class WP_JWT_Authentication {
   function load_classes() {
 
     require_once WP_JWT_PLUGIN_DIR.'config.php';
-    
+
     /**
       * Require jwt-functions to use them in this plugin.
     */

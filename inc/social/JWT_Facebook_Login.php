@@ -1,9 +1,12 @@
 <?php
 
+define('JWT_FACEBOOK_META_KEY', '_jwt_facebook_userid');
+
 class JWT_Facebook_Login {
   private $token;
   private $code;
-  public $user_id;
+  private $user_id;
+  private $access_token;
 
   function __construct($token = null, $code = null) {
     $this->token = $token;
@@ -19,12 +22,19 @@ class JWT_Facebook_Login {
 
     $jwt_functions = new JWT_Functions();
 
+    $this->check_user_status();
+
     return $jwt_functions->create_token($this->user_id);
   }
 
   private function check_user_status() {
-    // check if user exists 
-    // if not create new user
+    $user = get_users(array('meta_key' => JWT_FACEBOOK_META_KEY, 'meta_value' => $this->user_id, 'fields' => 'ID'));
+
+    if( ! empty($user) ) { // User does exist
+
+    } else { // User does NOT exist
+
+    }
   }
 
   private function check_identity() {
@@ -71,6 +81,7 @@ class JWT_Facebook_Login {
       return new WP_Error('userids_not_matching', 'User-IDs do not math');
     }
 
+    $this->access_token = $token;
     $this->user_id = $response->data->user_id;
 
   }
