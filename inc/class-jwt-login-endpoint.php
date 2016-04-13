@@ -70,8 +70,6 @@ class JWT_Login_Endpoint {
       } else {
         return new WP_Error( 'credentials_invalid', __( 'Username/Password combination is invalid', 'wp_jwt_authentication' ) );
       }
-
-
     }
 
     return $return;

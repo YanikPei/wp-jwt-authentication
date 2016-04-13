@@ -113,10 +113,6 @@ class JWT_Facebook_Login {
       return new WP_Error('fb_error', $response->error->message);
     }
 
-    if( $this->token != null && $this->token != $response->user_id ) {
-      return new WP_Error('userids_not_matching', 'User-IDs do not math');
-    }
-
     $this->access_token = $token;
     $this->user_id = $response->data->user_id;
 
