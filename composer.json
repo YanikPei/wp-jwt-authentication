@@ -2,6 +2,7 @@
     "require": {
         "firebase/php-jwt": "^3.0",
         "zendframework/zend-http": "~2.3",
-        "rmccue/requests": ">=1.0"
+        "rmccue/requests": ">=1.0",
+        "facebook/php-sdk-v4" : "~5.0"
     }
 }

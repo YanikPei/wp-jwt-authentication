@@ -7,10 +7,17 @@ class JWT_Facebook_Login {
   private $code;
   private $user_id;
   private $access_token;
+  private $fb_graph;
 
   function __construct($token = null, $code = null) {
     $this->token = $token;
     $this->code = $code;
+
+    $this->fb_graph = new Facebook\Facebook([
+      'app_id' => FB_APP_ID,
+      'app_secret' => FB_APP_SECRET,
+      'default_graph_version' => 'v2.5',
+    ]);
   }
 
   public function create_jwt_token() {
@@ -32,8 +39,37 @@ class JWT_Facebook_Login {
 
     if( ! empty($user) ) { // User does exist
 
+      $this->user_id = $user[0];
+
     } else { // User does NOT exist
 
+      // fetch user information
+      try {
+        $response = $this->fb_graph->get('/me?fields=email,first_name,last_name', $this->access_token);
+      } catch(Facebook\Exceptions\FacebookResponseException $e) {
+        return new WP_Error('fb_graph_error', 'Graph returned an error: ' . $e->getMessage());
+        exit;
+      } catch(Facebook\Exceptions\FacebookSDKException $e) {
+        return new WP_Error('fb_sdk_error', 'Facebook SDK returned an error: ' . $e->getMessage());
+        exit;
+      }
+
+      $fb_user = $response->getGraphUser();
+
+      // create wp-user
+      $random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
+	    $user_id = wp_create_user( $fb_user['email'], $random_password, $fb_user['email'] );
+
+      if( is_numeric($user_id) ) {
+        wp_update_user( array( 'ID' => $user_id, 'first_name' => $fb_user['first_name'], 'last_name' => $fb_user['last_name'], 'role' => 'editor' ) );
+        update_user_meta( $user_id, JWT_FACEBOOK_META_KEY, $this->user_id );
+      } else {
+        return new WP_Error('registration_error', $user_id->get_error_message());
+      }
+
+      $this->user_id = $user_id;
+
+      return true;
     }
   }
 
