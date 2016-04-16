@@ -37,8 +37,8 @@ class JWT_Facebook_Login {
     $this->code = $code;
 
     $this->fb_graph = new Facebook\Facebook([
-      'app_id' => FB_APP_ID,
-      'app_secret' => FB_APP_SECRET,
+      'app_id' => get_option('jwt_fb_app_id'),
+      'app_secret' => get_option('jwt_fb_app_secret'),
       'default_graph_version' => 'v2.5',
     ]);
   }
@@ -143,7 +143,7 @@ class JWT_Facebook_Login {
       return $token;
     }
 
-    $response_json = Requests::get("https://graph.facebook.com/debug_token?input_token=$token&access_token=".FB_APP_ID.urlencode('|').FB_APP_SECRET);
+    $response_json = Requests::get("https://graph.facebook.com/debug_token?input_token=$token&access_token=".get_option('jwt_fb_app_id').urlencode('|').get_option('jwt_fb_app_secret'));
 
     $response = json_decode($response_json->body);
 
@@ -160,7 +160,7 @@ class JWT_Facebook_Login {
   * converts a fb-code to a fb-token by using Graph-API
   */
   private function code_to_token() {
-    $response_json = Requests::get("https://graph.facebook.com/v2.3/oauth/access_token?client_id=".FB_APP_ID."&redirect_uri=".urlencode(JWT_SOCIAL_REDIRECT)."%3Fmethod%3Dfacebook&client_secret=".FB_APP_SECRET."&code=$this->code");
+    $response_json = Requests::get("https://graph.facebook.com/v2.3/oauth/access_token?client_id=".get_option('jwt_fb_app_id')."&redirect_uri=".urlencode(JWT_SOCIAL_REDIRECT)."%3Fmethod%3Dfacebook&client_secret=".get_option('jwt_fb_app_secret')."&code=$this->code");
 
     $response = json_decode($response_json->body);
 
