@@ -6,13 +6,8 @@
     <?php } ?>
   </h2>
 
-  <h1><?php echo $tabs[$current_tab]; ?></h1>
-
-  <?php do_action( 'jwt_settings_' . $current_tab ); ?>
-
-  <p class="submit">
-	  <input name="save" class="button-primary jwt-save-button" type="submit" value="<?php esc_attr_e( 'Save changes', 'jwt' ); ?>" />
-		<?php wp_nonce_field( 'jwt-settings' ); ?>
-	</p>
+  <form method="post" action="options.php">
+    <?php do_action( 'jwt_settings_' . $current_tab ); ?>
+  </form>
 
 </div>

@@ -7,6 +7,8 @@ abstract class JWT_Settings {
 
   public function __construct() {
     add_filter('jwt_settings_tabs_array', array($this, 'add_settings_tab'), 20);
+    add_action('jwt_register_settings', array($this, 'register_settings') );
+    add_action('jwt_settings_' . $this->id, array($this, 'output'));
   }
 
   public function add_settings_tab($tabs) {
@@ -19,16 +21,64 @@ abstract class JWT_Settings {
     return array();
   }
 
-  public function output() {
-    $settings = $this->get_settings();
-
-    // output settings
+  public function get_sections() {
+    return array();
   }
 
-  public function save() {
-    $settings = $this->get_settings();
+  public function output() {
+    $sections = $this->get_sections();
 
-    // save settings
+    // output settings
+    foreach($sections as $section) {
+      settings_fields($section['id']);
+      do_settings_sections("jwt_admin_page");
+      submit_button();
+    }
+  }
+
+  public function register_settings() {
+    $settings = $this->get_settings();
+    $sections = $this->get_sections();
+
+    foreach($sections as $section) {
+      add_settings_section($section['id'], $section['title'], null, "jwt_admin_page");
+    }
+
+    foreach($settings as $setting) {
+      $callback = null;
+
+      switch($setting['type']) {
+        case 'text': $callback = array($this, 'settings_input_text'); break;
+        case 'textarea': $callback = array($this, 'settings_input_textarea'); break;
+        case 'checkbox': $callback = array($this, 'settings_input_checkbox'); break;
+      }
+
+      add_settings_field($setting['id'], $setting['title'], $callback, 'jwt_admin_page', $setting['section'], $setting);
+      register_setting($setting['section'], $setting['id']);
+    }
+  }
+
+  public function settings_input_text($args) {
+    ?>
+    <input type="text" name="<?php echo $args['id']; ?>" value="<?php echo get_option($args['id']); ?>" />
+    <?php
+  }
+
+  public function settings_input_textarea($args) {
+    ?>
+    <textarea name="<?php echo $args['id']; ?>">
+      <?php echo get_option($args['id']); ?>
+    </textarea>
+    <?php
+  }
+
+  public function settings_input_checkbox($args) {
+    ?>
+    <label for="<?php echo $args['id']; ?>">
+      <input type="checkbox" name="<?php echo $args['id']; ?>" id="<?php echo $args['id']; ?>" <?php echo (get_option($args['id'])) ? 'checked' : ''; ?> />
+       <?php echo $args['label']; ?>
+    </label>
+    <?php
   }
 
 }
