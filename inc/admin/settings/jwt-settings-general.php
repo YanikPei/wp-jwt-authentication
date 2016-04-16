@@ -30,8 +30,9 @@ class JWT_Settings_General extends JWT_Settings {
       ),
       array(
         'id'      =>  'jwt_expiration_time',
-        'title'   =>  __('Expiration', 'jwt'),
+        'title'   =>  __('Expiration (in seconds)', 'jwt'),
         'type'    =>  'text',
+        'default' =>  '86400',
         'section' =>  'jwt_general'
       ),
     );

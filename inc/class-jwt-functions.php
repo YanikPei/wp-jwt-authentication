@@ -25,10 +25,12 @@ class JWT_Functions {
    */
   function create_token( $user_id ) {
 
+    $expiration_time = (get_option('jwt_expiration_time')) ? intval(get_option('jwt_expiration_time')) : 86400;
+
     $tokenId    = base64_encode( mcrypt_create_iv(32) );
     $issuedAt   = time();
     $notBefore  = $issuedAt;
-    $expire     = $notBefore + 86400;
+    $expire     = $notBefore + $expiration_time;
     $serverName = get_bloginfo('url');
 
     $data = [
