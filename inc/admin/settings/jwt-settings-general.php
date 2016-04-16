@@ -23,10 +23,11 @@ class JWT_Settings_General extends JWT_Settings {
   public function get_settings() {
     return array(
       array(
-        'id'      =>  'jwt_secret',
-        'title'   =>  __('Secret', 'jwt'),
-        'type'    =>  'text',
-        'section' =>  'jwt_general'
+        'id'          =>  'jwt_secret',
+        'title'       =>  __('Secret', 'jwt'),
+        'type'        =>  'text',
+        'section'     =>  'jwt_general',
+        'description' =>  '<a href="'.WP_JWT_PLUGIN_DIR_URL.'/create_secret.php" target="_blank">'.__('Generate a secret', 'jwt'). '</a> ' . __('and copy it in here', 'jwt') . '.'
       ),
       array(
         'id'      =>  'jwt_expiration_time',

@@ -62,6 +62,7 @@ abstract class JWT_Settings {
     $default = (isset($args['default'])) ? $args['default'] : '';
     ?>
     <input type="text" name="<?php echo $args['id']; ?>" value="<?php echo (get_option($args['id'])) ? get_option($args['id']) : $default; ?>" />
+    <?php echo (isset($args['description'])) ? $args['description'] : ''; ?>
     <?php
   }
 
