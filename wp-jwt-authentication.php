@@ -37,7 +37,14 @@ class WP_JWT_Authentication {
    */
   function load_classes() {
 
-    require_once WP_JWT_PLUGIN_DIR.'config.php';
+    /**
+    * Require config-file
+    */
+    if (!file_exists(WP_JWT_PLUGIN_DIR . '/config.php')) {
+      throw new Error('config.php is missing! Create the config-file in '.WP_JWT_PLUGIN_DIR);
+    } else {
+      require_once WP_JWT_PLUGIN_DIR . '/config.php';
+    }
 
     /**
       * Require jwt-functions to use them in this plugin.
