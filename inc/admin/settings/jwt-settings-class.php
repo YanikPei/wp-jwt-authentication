@@ -1,30 +1,56 @@
 <?php
 
+/**
+ * Abstract settings class
+ *
+ * @since 1.1.0
+ * @access public
+ *
+ */
+
 abstract class JWT_Settings {
 
+  /* @var string settings-id */
   protected $id;
+
+  /* @var string settings-label */
   protected $label;
 
+  /**
+  * Constructor adds settings tabm registers settings, prints settings
+  */
   public function __construct() {
     add_filter('jwt_settings_tabs_array', array($this, 'add_settings_tab'), 20);
     add_action('jwt_register_settings', array($this, 'register_settings') );
     add_action('jwt_settings_' . $this->id, array($this, 'output'));
   }
 
+  /**
+  * Add new tab to settings-page
+  */
   public function add_settings_tab($tabs) {
     $tabs[$this->id] = $this->label;
 
     return $tabs;
   }
 
+  /**
+  * get settings for this class
+  */
   public function get_settings() {
     return array();
   }
 
+  /**
+  * get sections for this class
+  */
   public function get_sections() {
     return array();
   }
 
+  /**
+  * print settings using WP-Settings-API
+  */
   public function output() {
     $sections = $this->get_sections();
 
@@ -36,6 +62,9 @@ abstract class JWT_Settings {
     }
   }
 
+  /**
+  * register sections and setting fields
+  */
   public function register_settings() {
     $settings = $this->get_settings();
     $sections = $this->get_sections();
@@ -58,6 +87,9 @@ abstract class JWT_Settings {
     }
   }
 
+  /**
+  * html for text-input
+  */
   public function settings_input_text($args) {
     $default = (isset($args['default'])) ? $args['default'] : '';
     ?>
@@ -66,6 +98,9 @@ abstract class JWT_Settings {
     <?php
   }
 
+  /**
+  * html for textarea
+  */
   public function settings_input_textarea($args) {
     ?>
     <textarea name="<?php echo $args['id']; ?>">
@@ -74,6 +109,9 @@ abstract class JWT_Settings {
     <?php
   }
 
+  /**
+  * html for checkbox
+  */
   public function settings_input_checkbox($args) {
     ?>
     <label for="<?php echo $args['id']; ?>">

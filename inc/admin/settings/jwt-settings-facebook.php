@@ -1,7 +1,18 @@
 <?php
 
+/**
+ * Settings for facebook authorization
+ *
+ * @since 1.1.0
+ * @access public
+ *
+ */
+
 class JWT_Settings_Facebook extends JWT_Settings {
 
+  /**
+  * constructor adds tab, registers settings, prints settings
+  */
   public function __construct() {
     $this->id = 'facebook';
     $this->label = 'Facebook';
@@ -11,6 +22,9 @@ class JWT_Settings_Facebook extends JWT_Settings {
     add_action('jwt_settings_' . $this->id, array($this, 'output'));
   }
 
+  /**
+  * define sections
+  */
   public function get_sections() {
     return array(
       array(
@@ -20,6 +34,9 @@ class JWT_Settings_Facebook extends JWT_Settings {
     );
   }
 
+  /**
+  * define setting fields
+  */
   public function get_settings() {
     return array(
       array(

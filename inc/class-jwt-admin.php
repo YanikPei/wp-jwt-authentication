@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Handles admin stuff
+ *
+ * @since 1.1.0
+ * @access public
+ *
+ */
+
 class JWT_Admin {
 
   /**
@@ -14,14 +22,23 @@ class JWT_Admin {
     include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-facebook.php');
   }
 
+  /**
+  * Register settings page
+  */
   function jwt_register_admin_page() {
     add_options_page( 'JWT', 'JWT', 'manage_options', 'jwt_admin_page', array($this, 'jwt_admin_page')  );
   }
 
+  /**
+  * Register settings
+  */
   function jwt_register_settings() {
     do_action('jwt_register_settings');
   }
 
+  /**
+  * Admin page content
+  */
   function jwt_admin_page() {
 
     $current_tab = empty( $_GET['tab'] ) ? 'general' : sanitize_title( $_GET['tab'] );
