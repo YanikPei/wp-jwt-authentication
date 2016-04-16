@@ -31,7 +31,7 @@ abstract class JWT_Settings {
     // output settings
     foreach($sections as $section) {
       settings_fields($section['id']);
-      do_settings_sections("jwt_admin_page");
+      do_settings_sections($section['id']);
       submit_button();
     }
   }
@@ -41,7 +41,7 @@ abstract class JWT_Settings {
     $sections = $this->get_sections();
 
     foreach($sections as $section) {
-      add_settings_section($section['id'], $section['title'], null, "jwt_admin_page");
+      add_settings_section($section['id'], $section['title'], null, $section['id']);
     }
 
     foreach($settings as $setting) {
@@ -53,7 +53,7 @@ abstract class JWT_Settings {
         case 'checkbox': $callback = array($this, 'settings_input_checkbox'); break;
       }
 
-      add_settings_field($setting['id'], $setting['title'], $callback, 'jwt_admin_page', $setting['section'], $setting);
+      add_settings_field($setting['id'], $setting['title'], $callback, $setting['section'], $setting['section'], $setting);
       register_setting($setting['section'], $setting['id']);
     }
   }
