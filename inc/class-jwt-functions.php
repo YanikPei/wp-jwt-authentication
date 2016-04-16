@@ -42,7 +42,7 @@ class JWT_Functions {
         ]
     ];
 
-    $secretKey = base64_decode( JWT_SECRET );
+    $secretKey = base64_decode( get_option('jwt_secret') );
 
     $jwt = JWT::encode(
       $data,
@@ -88,7 +88,7 @@ class JWT_Functions {
         if ( $jwt ) {
           try {
 
-            $secretKey = base64_decode( JWT_SECRET );
+            $secretKey = base64_decode( get_option('jwt_secret') );
 
             $token = JWT::decode( $jwt, $secretKey, array('HS256') );
 
