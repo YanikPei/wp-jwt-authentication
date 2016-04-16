@@ -1,14 +1,37 @@
 <?php
 
+/**
+ * JWT-Facebook_Login class, handle Facebook-authentication
+ *
+ * This class validates a facebook-code/-token and checks if a wp-user
+ * linked to the Facebook-account exists. If not, a new user will be registered.
+ *
+ * @package wp-jwt-authentication
+ * @subpackage wp-jwt-authentication/inc/social
+ * @since 1.0.0
+ */
+
 define('JWT_FACEBOOK_META_KEY', '_jwt_facebook_userid');
 
 class JWT_Facebook_Login {
+  /* @var string Token that has to be validated */
   private $token;
+
+  /* @var string Code that has to be converted and validated */
   private $code;
+
+  /* @var int WP-userid */
   private $user_id;
+
+  /* @var string FB-access-token */
   private $access_token;
+
+  /* @var Object FB-graph  */
   private $fb_graph;
 
+  /*
+  * Constructor for the facebook class. Initializes FB-Graph-API.
+  */
   function __construct($token = null, $code = null) {
     $this->token = $token;
     $this->code = $code;
@@ -20,6 +43,11 @@ class JWT_Facebook_Login {
     ]);
   }
 
+  /*
+  * Create a jwt for current user
+  *
+  * @return string|WP_Error
+  */
   public function create_jwt_token() {
     $identity = $this->check_identity();
 
@@ -34,6 +62,10 @@ class JWT_Facebook_Login {
     return $jwt_functions->create_token($this->user_id);
   }
 
+  /*
+  * Checks if a user linked to fb-account exists. If not it will create a new user
+  * and fetch the required data from facebook (e.g. email, first_name, last_name)
+  */
   private function check_user_status() {
     $user = get_users(array('meta_key' => JWT_FACEBOOK_META_KEY, 'meta_value' => $this->user_id, 'fields' => 'ID'));
 
@@ -73,6 +105,9 @@ class JWT_Facebook_Login {
     }
   }
 
+  /*
+  * checks if the token is valid
+  */
   private function check_identity() {
 
     if( $this->token == null && $this->code == null ) {
@@ -100,6 +135,9 @@ class JWT_Facebook_Login {
 
   }
 
+  /*
+  * sends token to facebook and fetches fb-id if token is valid.
+  */
   private function debug_token($token) {
     if( is_wp_error($token) ) {
       return $token;
@@ -118,6 +156,9 @@ class JWT_Facebook_Login {
 
   }
 
+  /*
+  * converts a fb-code to a fb-token by using Graph-API
+  */
   private function code_to_token() {
     $response_json = Requests::get("https://graph.facebook.com/v2.3/oauth/access_token?client_id=".FB_APP_ID."&redirect_uri=".urlencode(JWT_SOCIAL_REDIRECT)."%3Fmethod%3Dfacebook&client_secret=".FB_APP_SECRET."&code=$this->code");
 

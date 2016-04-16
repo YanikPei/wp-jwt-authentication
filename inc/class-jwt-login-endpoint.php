@@ -3,9 +3,10 @@
 /**
  * Rest-API-Endpoint to receive a token.
  *
- * This endpoint needs a username and password and returns a token.
+ * This endpoint handles the authentication and returns a jwt-token to access
+ * API-functions.
  *
- * @since 4.3.0
+ * @since 0.0.1
  * @access public
  *
  */
@@ -57,6 +58,7 @@ class JWT_Login_Endpoint {
         default:
           $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
       }
+
     } else { // if user wants to login by username/password
       $username = $request['username'];
       $password = $request['password'];
@@ -76,6 +78,15 @@ class JWT_Login_Endpoint {
 
   }
 
+  /*
+  * Handles Facebook-authentication
+  *
+  * @param array $request:
+  *   @type string $token Contains FB-token
+  *   @type string $token Contains FB-token
+  *
+  * @return string|WP_Error returns token on authentication success
+  */
   private function handle_facebook($request) {
     if( isset($request['error']) ) {
       return new WP_Error('gb_error', 'FB-Error: '.$request['error_description'].' ('.$request['error_reason'].')');
@@ -96,7 +107,6 @@ class JWT_Login_Endpoint {
     $facebook_login = new JWT_Facebook_Login($token, $code);
 
     return $facebook_login->create_jwt_token();
-
 
   }
 

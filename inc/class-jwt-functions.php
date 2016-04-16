@@ -5,7 +5,7 @@
  *
  * These functions make it easier to work with JSON Web Tokens.
  *
- * @since 4.3.0
+ * @since 0.0.1
  * @access public
  *
  */
@@ -18,9 +18,7 @@ class JWT_Functions {
   /**
    * Create a token for a user.
    *
-   * Checks the login-credentials and creates a json web token for this user.
-   *
-   * @since 4.3.0
+   * @since 0.0.1
    *
    * @return array|WP_Error Unencoded array with the token and expiration-timestamp
    *  when credentials are valid, error when they are invalid.
