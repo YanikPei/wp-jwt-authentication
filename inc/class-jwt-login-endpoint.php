@@ -85,7 +85,7 @@ class JWT_Login_Endpoint {
 
   }
 
-  /*
+  /**
   * Handles Facebook-authentication
   *
   * @param array $request:

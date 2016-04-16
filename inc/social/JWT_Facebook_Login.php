@@ -57,7 +57,11 @@ class JWT_Facebook_Login {
 
     $jwt_functions = new JWT_Functions();
 
-    $this->check_user_status();
+    $this->user_id = $this->check_user_status();
+
+    if( ! $this->user_id ) {
+      return new WP_Error('no_user_found', 'No user matching the facebook id was found');
+    }
 
     return $jwt_functions->create_token($this->user_id);
   }
@@ -71,9 +75,13 @@ class JWT_Facebook_Login {
 
     if( ! empty($user) ) { // User does exist
 
-      $this->user_id = $user[0];
+      return $user[0];
 
     } else { // User does NOT exist
+
+      if( ! get_option('jwt_fb_create_user') ) {
+        return false;
+      }
 
       // fetch user information
       try {
@@ -99,10 +107,10 @@ class JWT_Facebook_Login {
         return new WP_Error('registration_error', $user_id->get_error_message());
       }
 
-      $this->user_id = $user_id;
-
-      return true;
+      return $user_id;
     }
+
+    return false;
   }
 
   /**

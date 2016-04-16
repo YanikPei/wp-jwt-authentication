@@ -58,6 +58,13 @@ class JWT_Settings_Facebook extends JWT_Settings {
         'type'    =>  'text',
         'section' =>  'jwt_facebook'
       ),
+      array(
+        'id'      =>  'jwt_fb_create_user',
+        'title'   =>  __('Registration', 'jwt'),
+        'type'    =>  'checkbox',
+        'section' =>  'jwt_facebook',
+        'label'   =>  __('Create a new user if no user matching the facebook id was found.', 'jwt')
+      ),
     );
   }
 
