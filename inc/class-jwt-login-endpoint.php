@@ -55,7 +55,12 @@ class JWT_Login_Endpoint {
 
       switch($request['method']) {
         case 'facebook':
-          $return = $this->handle_facebook($request);
+          if( get_option('jwt_fb_active') ) {
+            $return = $this->handle_facebook($request);
+          } else {
+            $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
+          }
+
           break;
         default:
           $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));

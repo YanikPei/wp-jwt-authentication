@@ -40,6 +40,13 @@ class JWT_Settings_Facebook extends JWT_Settings {
   public function get_settings() {
     return array(
       array(
+        'id'      =>  'jwt_fb_active',
+        'title'   =>  __('Activate', 'jwt'),
+        'type'    =>  'checkbox',
+        'section' =>  'jwt_facebook',
+        'label'   =>  __('Activate facebook authentication', 'jwt')
+      ),
+      array(
         'id'      =>  'jwt_fb_app_id',
         'title'   =>  __('App ID', 'jwt'),
         'type'    =>  'text',
