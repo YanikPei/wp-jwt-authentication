@@ -29,7 +29,7 @@ class JWT_Facebook_Login {
   /* @var Object FB-graph  */
   private $fb_graph;
 
-  /*
+  /**
   * Constructor for the facebook class. Initializes FB-Graph-API.
   */
   function __construct($token = null, $code = null) {
@@ -43,7 +43,7 @@ class JWT_Facebook_Login {
     ]);
   }
 
-  /*
+  /**
   * Create a jwt for current user
   *
   * @return string|WP_Error
@@ -62,7 +62,7 @@ class JWT_Facebook_Login {
     return $jwt_functions->create_token($this->user_id);
   }
 
-  /*
+  /**
   * Checks if a user linked to fb-account exists. If not it will create a new user
   * and fetch the required data from facebook (e.g. email, first_name, last_name)
   */
@@ -105,7 +105,7 @@ class JWT_Facebook_Login {
     }
   }
 
-  /*
+  /**
   * checks if the token is valid
   */
   private function check_identity() {
@@ -135,7 +135,7 @@ class JWT_Facebook_Login {
 
   }
 
-  /*
+  /**
   * sends token to facebook and fetches fb-id if token is valid.
   */
   private function debug_token($token) {
@@ -156,7 +156,7 @@ class JWT_Facebook_Login {
 
   }
 
-  /*
+  /**
   * converts a fb-code to a fb-token by using Graph-API
   */
   private function code_to_token() {

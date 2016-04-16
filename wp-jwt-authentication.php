@@ -3,7 +3,7 @@
 /*
  * Plugin Name: WP-JSON-Web-Token Authentication
  * Description: This plugin creates endpoints for wp-rest-api (v2) in order to use JSON-Web-Token as an authentication-method.
- * Version:     1.0
+ * Version:     1.0.0
  * Author:      Yanik Peiffer
 */
 
@@ -55,6 +55,13 @@ class WP_JWT_Authentication {
       * Require jwt-login-endpoint to register endpoint.
     */
     require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-login-endpoint.php';
+
+    /**
+    * Require jwt-admin if user is in backend
+    */
+    if( is_admin() ) {
+      require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-admin.php';
+    }
   }
 
   /**
