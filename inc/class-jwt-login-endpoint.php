@@ -85,12 +85,22 @@ class JWT_Login_Endpoint {
       if ( $user && wp_check_password( $password, $user->data->user_pass, $user->ID ) ) {
         $return = $jwt_functions->create_token( $user->ID );
       } else {
-        return new WP_Error( 'credentials_invalid', __( 'Username/Password combination is invalid', 'wp_jwt_authentication' ) );
+        $return = new WP_Error( 'credentials_invalid', __( 'Username/Password combination is invalid', 'wp_jwt_authentication' ) );
       }
     }
 
+    if( isset($request['set_wp_cookie']) && $request['set_wp_cookie'] == 'true' ) {
+      wp_set_auth_cookie( $return['userid'], true );
+    }
+
     if( isset($request['redirect_to']) ) {
-      var_dump(wp_redirect($request['redirect_to']));
+      $location = $request['redirect_to'];
+
+      if( is_wp_error($return) ) {
+        $location .= '?error=true&msg='.urlencode($return->get_error_message());
+      }
+
+      wp_redirect($location);
       exit;
       return;
     }
