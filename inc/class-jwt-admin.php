@@ -20,6 +20,7 @@ class JWT_Admin {
     include_once(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-class.php');
     include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-general.php');
     include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-facebook.php');
+    include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-account-kit.php');
   }
 
   /**

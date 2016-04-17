@@ -62,6 +62,14 @@ class JWT_Login_Endpoint {
           }
 
           break;
+        case 'account_kit':
+          if( get_option('jwt_account_kit_active') ) {
+            $return = $this->handle_account_kit($request);
+          } else {
+            $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
+          }
+
+          break;
         default:
           $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
       }
@@ -114,7 +122,19 @@ class JWT_Login_Endpoint {
     $facebook_login = new JWT_Facebook_Login($token, $code);
 
     return $facebook_login->create_jwt_token();
+  }
 
+  private function handle_account_kit($request) {
+
+    if( !isset($request['token']) ) {
+      return new WP_Error('token_missing', 'No token available');
+    }
+
+    require_once WP_JWT_PLUGIN_DIR.'/inc/social/JWT_Account_Kit_Login.php';
+
+    $account_kit = new JWT_Account_Kit_Login($request['token']);
+
+    return $account_kit->create_jwt_token();
   }
 
 }
