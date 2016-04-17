@@ -30,6 +30,10 @@ class JWT_Settings_Facebook extends JWT_Settings {
       array(
         'id'    =>  'jwt_facebook',
         'title' =>  'Facebook Settings'
+      ),
+      array(
+        'id'    =>  'jwt_facebook_button',
+        'title' =>  'Facebook Login Button'
       )
     );
   }
@@ -64,6 +68,13 @@ class JWT_Settings_Facebook extends JWT_Settings {
         'type'    =>  'checkbox',
         'section' =>  'jwt_facebook',
         'label'   =>  __('Create a new user if no user matching the facebook id was found.', 'jwt')
+      ),
+      array(
+        'id'      =>  'jwt_fb_login_button',
+        'title'   =>  __('Show button', 'jwt'),
+        'type'    =>  'checkbox',
+        'section' =>  'jwt_facebook_button',
+        'label'   =>  __('Show a "Login with facebook" button.', 'jwt')
       ),
     );
   }

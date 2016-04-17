@@ -1,0 +1,14 @@
+.button-secondary.facebook-btn {
+  display: block;
+  height: auto;
+  padding: 5px;
+  text-align: center;
+  background: #4267B2;
+  color: #FFF;
+  border: 0;
+  box-shadow: none;
+}
+.button-secondary.facebook-btn:hover {
+  background: #30487b;
+  color: #FFF;
+}

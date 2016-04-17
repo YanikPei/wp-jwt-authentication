@@ -39,6 +39,11 @@ class JWT_Facebook_Login {
       include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-facebook.php');
     }
 
+    if( get_option('jwt_fb_login_button') ) {
+      add_action('login_head', array($this, 'login_form_head'));
+      add_action( 'login_form', array($this, 'login_form_button') );
+    }
+
   }
 
   /**
@@ -198,7 +203,9 @@ class JWT_Facebook_Login {
   * converts a fb-code to a fb-token by using Graph-API
   */
   private function code_to_token() {
-    $response_json = Requests::get("https://graph.facebook.com/v2.3/oauth/access_token?client_id=".get_option('jwt_fb_app_id')."&redirect_uri=".urlencode(JWT_SOCIAL_REDIRECT)."%3Fmethod%3Dfacebook&client_secret=".get_option('jwt_fb_app_secret')."&code=$this->code");
+    $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');
+
+    $response_json = Requests::get("https://graph.facebook.com/v2.3/oauth/access_token?client_id=".get_option('jwt_fb_app_id')."&redirect_uri=".$redirect_uri."&client_secret=".get_option('jwt_fb_app_secret')."&code=$this->code");
 
     $response = json_decode($response_json->body);
 
@@ -207,6 +214,18 @@ class JWT_Facebook_Login {
     }
 
     return $response->access_token;
+  }
+
+  public function login_form_head() {
+    echo '<link rel="stylesheet" type="text/css" href="'.WP_JWT_PLUGIN_DIR_URL.'assets/css/facebook_login.css" />';
+  }
+
+  public function login_form_button() {
+
+    $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');
+
+    echo '<a href="https://www.facebook.com/dialog/oauth?client_id='.get_option('jwt_fb_app_id').'&scope=public_profile,email&redirect_uri='.$redirect_uri.'" class="button-secondary facebook-btn">'.__('Login with facebook', 'jwt').'</a><br />';
+
   }
 
 }
