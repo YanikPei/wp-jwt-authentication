@@ -95,7 +95,7 @@ class JWT_Facebook_Login {
     $this->user_id = $this->check_user_status();
 
     if( ! $this->user_id || is_wp_error($this->user_id) ) {
-      return new WP_Error('no_user_found', 'No user matching the facebook id was found');
+      return new WP_Error('no_user_found', __('No user matching the facebook id was found', 'wp_jwt_auth'));
     }
 
     return $jwt_functions->create_token($this->user_id);
@@ -154,7 +154,7 @@ class JWT_Facebook_Login {
   private function check_identity() {
 
     if( $this->token == null && $this->code == null ) {
-      return new WP_Error('no_token_or_code', 'No token or code available');
+      return new WP_Error('no_token_or_code', __('No token or code available', 'wp_jwt_auth'));
     }
 
     if( $this->token != null ) {
@@ -247,7 +247,7 @@ class JWT_Facebook_Login {
 
     $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');
 
-    echo '<a href="#" onclick="fbLoginButton(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=facebook&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');" class="button-secondary facebook-btn">'.__('Login with facebook', 'jwt').'</a><br />';
+    echo '<a href="#" onclick="fbLoginButton(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=facebook&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');" class="button-secondary facebook-btn">'.__('Login with facebook', 'wp_jwt_auth').'</a><br />';
 
   }
 

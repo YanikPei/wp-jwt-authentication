@@ -26,7 +26,7 @@ class JWT_Account_Kit_Login {
     }
 
     if( !isset($request['token']) ) {
-      return new WP_Error('token_missing', 'No token available');
+      return new WP_Error('token_missing', __('No token available', 'wp_jwt_auth'));
     }
 
     $this->token = $request['token'];
@@ -37,11 +37,11 @@ class JWT_Account_Kit_Login {
 
   public function create_jwt_token() {
     if( empty(get_option('jwt_account_kit_app_id')) ) {
-      return new WP_Error('app_id_missing', 'Account-Kit app id is missing');
+      return new WP_Error('app_id_missing', __('Account-Kit app id is missing', 'wp_jwt_auth'));
     }
 
     if( empty(get_option('jwt_account_kit_app_secret')) ) {
-      return new WP_Error('app_id_missing', 'Account-Kit app secret is missing');
+      return new WP_Error('app_id_missing', __('Account-Kit app secret is missing', 'wp_jwt_auth'));
     }
 
     $identity = $this->check_identity();
@@ -53,7 +53,7 @@ class JWT_Account_Kit_Login {
     $this->user_id = $this->check_user_status();
 
     if( ! $this->user_id || is_wp_error($this->user_id) ) {
-      return new WP_Error('no_user_found', 'No user matching the account kit id was found');
+      return new WP_Error('no_user_found', __('No user matching the account kit id was found', 'wp_jwt_auth'));
     }
 
     $jwt_functions = new JWT_Functions();
@@ -63,7 +63,7 @@ class JWT_Account_Kit_Login {
 
   private function check_identity() {
     if( $this->token == null ) {
-      return new WP_Error('no_token_or_code', 'No token or code available');
+      return new WP_Error('no_token_or_code', __('No token or code available', 'wp_jwt_auth'));
     }
 
     $response_json = Requests::get("https://graph.accountkit.com/v1.0/access_token?grant_type=authorization_code&code=".$this->token."&access_token=AA".urlencode('|').get_option('jwt_account_kit_app_id').urlencode('|').get_option('jwt_account_kit_app_secret'));
@@ -153,11 +153,11 @@ class JWT_Account_Kit_Login {
     echo '<input type="hidden" name="redirect_to" value="'.get_bloginfo('url').'" />';
 
     if( get_option('jwt_account_kit_phone_button') ) {
-      echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick();">'.__('Login via SMS', 'jwt').'</a><br />';
+      echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick();">'.__('Login via SMS', 'wp_jwt_auth').'</a><br />';
     }
 
     if( get_option('jwt_account_kit_email_button') ) {
-      echo '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick();">'.__('Login via Email', 'jwt').'</a><br />';
+      echo '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick();">'.__('Login via Email', 'wp_jwt_auth').'</a><br />';
     }
 
   }

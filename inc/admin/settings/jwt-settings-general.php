@@ -29,7 +29,7 @@ class JWT_Settings_General extends JWT_Settings {
     return array(
       array(
         'id'    =>  'jwt_general',
-        'title' =>  'General'
+        'title' =>  __('General', 'wp_jwt_auth')
       )
     );
   }
@@ -41,14 +41,14 @@ class JWT_Settings_General extends JWT_Settings {
     return array(
       array(
         'id'          =>  'jwt_secret',
-        'title'       =>  __('Secret', 'jwt'),
+        'title'       =>  __('Secret', 'wp_jwt_auth'),
         'type'        =>  'text',
         'section'     =>  'jwt_general',
-        'description' =>  '<a href="'.WP_JWT_PLUGIN_DIR_URL.'/create_secret.php" target="_blank">'.__('Generate a secret', 'jwt'). '</a> ' . __('and copy it in here', 'jwt') . '.'
+        'description' =>  '<a href="'.WP_JWT_PLUGIN_DIR_URL.'/create_secret.php" target="_blank">'.__('Generate a secret', 'wp_jwt_auth'). '</a> ' . __('and copy it in here', 'wp_jwt_auth') . '.'
       ),
       array(
         'id'      =>  'jwt_expiration_time',
-        'title'   =>  __('Expiration (in seconds)', 'jwt'),
+        'title'   =>  __('Expiration (in seconds)', 'wp_jwt_auth'),
         'type'    =>  'text',
         'default' =>  '86400',
         'section' =>  'jwt_general'

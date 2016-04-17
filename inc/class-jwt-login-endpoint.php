@@ -52,7 +52,7 @@ class JWT_Login_Endpoint {
    * @return array The token and expiration-timestamp
    */
   function action(WP_REST_Request $request) {
-    $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
+    $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_auth'));
 
     if( isset($request['method']) ) { // if user wants to login by social-media-account
 
@@ -69,7 +69,7 @@ class JWT_Login_Endpoint {
       if ( $user && wp_check_password( $password, $user->data->user_pass, $user->ID ) ) {
         $return = $jwt_functions->create_token( $user->ID );
       } else {
-        $return = new WP_Error( 'credentials_invalid', __( 'Username/Password combination is invalid', 'wp_jwt_authentication' ) );
+        $return = new WP_Error( 'credentials_invalid', __( 'Username/Password combination is invalid', 'wp_jwt_auth' ) );
       }
     }
 

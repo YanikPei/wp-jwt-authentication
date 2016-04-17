@@ -5,6 +5,7 @@
  * Description: This plugin creates endpoints for wp-rest-api (v2) in order to use JSON-Web-Token as an authentication-method.
  * Version:     1.1.0
  * Author:      Yanik Peiffer
+ * Text Domain: wp_jwt_auth
 */
 
 defined( 'ABSPATH' ) or die( 'No!' );
@@ -78,7 +79,7 @@ class WP_JWT_Authentication {
   */
   function required_jwt_secret() {
     $class = 'notice notice-error';
-  	$message = __( 'In order to use JWT for the Rest-API you have to set a <strong>secret</strong>. <a href="/wp-admin/options-general.php?page=jwt_admin_page&tab=general">Go to settings</a>', 'jwt' );
+  	$message = __( 'In order to use JWT for the Rest-API you have to set a <strong>secret</strong>. <a href="/wp-admin/options-general.php?page=jwt_admin_page&tab=general">Go to settings</a>', 'wp_jwt_auth' );
 
   	printf( '<div class="%1$s"><p>%2$s</p></div>', $class, $message );
   }
