@@ -59,7 +59,7 @@ class JWT_Facebook_Login {
 
     $this->user_id = $this->check_user_status();
 
-    if( ! $this->user_id ) {
+    if( ! $this->user_id || is_wp_error($this->user_id) ) {
       return new WP_Error('no_user_found', 'No user matching the facebook id was found');
     }
 

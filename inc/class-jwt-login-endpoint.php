@@ -89,6 +89,12 @@ class JWT_Login_Endpoint {
       }
     }
 
+    if( isset($request['redirect_to']) ) {
+      var_dump(wp_redirect($request['redirect_to']));
+      exit;
+      return;
+    }
+
     return $return;
 
   }
