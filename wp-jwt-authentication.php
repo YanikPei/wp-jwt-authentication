@@ -44,16 +44,16 @@ class WP_JWT_Authentication {
     require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-functions.php';
 
     /**
-      * Require jwt-login-endpoint to register endpoint.
-    */
-    require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-login-endpoint.php';
-
-    /**
     * Require jwt-admin if user is in backend
     */
     if( is_admin() ) {
       require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-admin.php';
     }
+
+    /**
+      * Require jwt-login-endpoint to register endpoint.
+    */
+    require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-login-endpoint.php';
   }
 
   /**

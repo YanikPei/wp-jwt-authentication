@@ -34,6 +34,11 @@ class JWT_Facebook_Login {
   */
   function __construct() {
     add_filter('jwt_login_method_facebook', array($this, 'handle_authentication'), 10, 2);
+
+    if( is_admin() ) {
+      include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-facebook.php');
+    }
+
   }
 
   public function handle_authentication($return, $request) {
