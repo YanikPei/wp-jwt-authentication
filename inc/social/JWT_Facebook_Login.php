@@ -205,6 +205,8 @@ class JWT_Facebook_Login {
   private function code_to_token() {
     $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');
 
+    var_dump($_GET);
+
     $response_json = Requests::get("https://graph.facebook.com/v2.3/oauth/access_token?client_id=".get_option('jwt_fb_app_id')."&redirect_uri=".$redirect_uri."&client_secret=".get_option('jwt_fb_app_secret')."&code=$this->code");
 
     $response = json_decode($response_json->body);
@@ -218,13 +220,34 @@ class JWT_Facebook_Login {
 
   public function login_form_head() {
     echo '<link rel="stylesheet" type="text/css" href="'.WP_JWT_PLUGIN_DIR_URL.'assets/css/facebook_login.css" />';
+    echo '<script>
+              (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/'.get_locale().'/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, "script", "facebook-jssdk"));
+
+
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : "'.get_option('jwt_fb_app_id').'",
+            cookie     : true,
+            xfbml      : true,
+            version    : "v2.2"
+          });
+
+        };
+          </script>';
+    echo '<script src="'.WP_JWT_PLUGIN_DIR_URL.'assets/js/facebook_login.js"></script>';
   }
 
   public function login_form_button() {
 
     $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');
 
-    echo '<a href="https://www.facebook.com/dialog/oauth?client_id='.get_option('jwt_fb_app_id').'&scope=public_profile,email&redirect_uri='.$redirect_uri.'" class="button-secondary facebook-btn">'.__('Login with facebook', 'jwt').'</a><br />';
+    echo '<a href="#" onclick="fbLoginButton(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=facebook&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');" class="button-secondary facebook-btn">'.__('Login with facebook', 'jwt').'</a><br />';
 
   }
 

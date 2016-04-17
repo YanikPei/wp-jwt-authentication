@@ -129,7 +129,7 @@ class JWT_Account_Kit_Login {
   }
 
   public function login_form_head() {
-    echo '<script src="https://sdk.accountkit.com/en_EN/sdk.js"></script>';
+    echo '<script src="//sdk.accountkit.com/en_EN/sdk.js"></script>';
     echo '<script>
       AccountKit_OnInteractive = function(){
         AccountKit.init(
