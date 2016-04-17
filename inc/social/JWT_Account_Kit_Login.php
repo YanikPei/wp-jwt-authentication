@@ -7,8 +7,23 @@ class JWT_Account_Kit_Login {
   private $user_id;
   private $access_token;
 
-  function __construct($token) {
-    $this->token = $token;
+  function __construct() {
+    add_filter('jwt_login_method_account_kit', array($this, 'handle_authentication'), 10, 2);
+  }
+
+  public function handle_authentication($return, $request) {
+    if( ! get_option('jwt_account_kit_active') ) {
+      return $return;
+    }
+
+    if( !isset($request['token']) ) {
+      return new WP_Error('token_missing', 'No token available');
+    }
+
+    $this->token = $request['token'];
+
+    return $this->create_jwt_token();
+
   }
 
   public function create_jwt_token() {
@@ -105,5 +120,7 @@ class JWT_Account_Kit_Login {
   }
 
 }
+
+return new JWT_Account_Kit_Login();
 
 ?>

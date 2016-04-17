@@ -32,15 +32,37 @@ class JWT_Facebook_Login {
   /**
   * Constructor for the facebook class. Initializes FB-Graph-API.
   */
-  function __construct($token = null, $code = null) {
-    $this->token = $token;
-    $this->code = $code;
+  function __construct() {
+    add_filter('jwt_login_method_facebook', array($this, 'handle_authentication'), 10, 2);
+  }
+
+  public function handle_authentication($return, $request) {
+    if( ! get_option('jwt_fb_active') ) {
+      return $return;
+    }
+
+    if( isset($request['error']) ) {
+      return new WP_Error('gb_error', 'FB-Error: '.$request['error_description'].' ('.$request['error_reason'].')');
+    }
+
+    $this->token = null;
+    $this->code = null;
+
+    if( isset($request['token']) ) {
+      $this->token = $request['token'];
+    }
+    if( isset($request['code']) ) {
+      $this->code = $request['code'];
+    }
 
     $this->fb_graph = new Facebook\Facebook([
       'app_id' => get_option('jwt_fb_app_id'),
       'app_secret' => get_option('jwt_fb_app_secret'),
       'default_graph_version' => 'v2.5',
     ]);
+
+    return $this->create_jwt_token();
+
   }
 
   /**
@@ -180,5 +202,7 @@ class JWT_Facebook_Login {
   }
 
 }
+
+return new JWT_Facebook_Login();
 
 ?>

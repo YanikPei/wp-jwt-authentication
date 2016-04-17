@@ -17,6 +17,9 @@ class JWT_Login_Endpoint {
 
   function __construct() {
     add_action( 'rest_api_init', array($this, 'register') );
+
+    require_once WP_JWT_PLUGIN_DIR.'inc/social/JWT_Account_Kit_Login.php';
+    require_once WP_JWT_PLUGIN_DIR.'inc/social/JWT_Facebook_Login.php';
   }
 
   /**
@@ -49,30 +52,11 @@ class JWT_Login_Endpoint {
    * @return array The token and expiration-timestamp
    */
   function action(WP_REST_Request $request) {
-    $return = null;
+    $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
 
     if( isset($request['method']) ) { // if user wants to login by social-media-account
 
-      switch($request['method']) {
-        case 'facebook':
-          if( get_option('jwt_fb_active') ) {
-            $return = $this->handle_facebook($request);
-          } else {
-            $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
-          }
-
-          break;
-        case 'account_kit':
-          if( get_option('jwt_account_kit_active') ) {
-            $return = $this->handle_account_kit($request);
-          } else {
-            $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
-          }
-
-          break;
-        default:
-          $return = new WP_Error('400', __('Authentication failed.', 'wp_jwt_authentication'));
-      }
+      $return = apply_filters('jwt_login_method_'.$request['method'], $return, $request);
 
     } else { // if user wants to login by username/password
       $username = $request['username'];
@@ -89,11 +73,11 @@ class JWT_Login_Endpoint {
       }
     }
 
-    if( isset($request['set_wp_cookie']) && $request['set_wp_cookie'] == 'true' ) {
+    if( isset($request['set_wp_cookie']) && $request['set_wp_cookie'] == 'true' && !is_wp_error($return) ) {
       wp_set_auth_cookie( $return['userid'], true );
     }
 
-    if( isset($request['redirect_to']) ) {
+    if( isset($request['redirect_to']) && !is_wp_error($return) ) {
       $location = $request['redirect_to'];
 
       if( is_wp_error($return) ) {
@@ -109,49 +93,6 @@ class JWT_Login_Endpoint {
 
   }
 
-  /**
-  * Handles Facebook-authentication
-  *
-  * @param array $request:
-  *   @type string $token Contains FB-token
-  *   @type string $token Contains FB-token
-  *
-  * @return string|WP_Error returns token on authentication success
-  */
-  private function handle_facebook($request) {
-    if( isset($request['error']) ) {
-      return new WP_Error('gb_error', 'FB-Error: '.$request['error_description'].' ('.$request['error_reason'].')');
-    }
-
-    $token = null;
-    $code = null;
-
-    require_once WP_JWT_PLUGIN_DIR.'/inc/social/JWT_Facebook_Login.php';
-
-    if( isset($request['token']) ) {
-      $token = $request['token'];
-    }
-    if( isset($request['code']) ) {
-      $code = $request['code'];
-    }
-
-    $facebook_login = new JWT_Facebook_Login($token, $code);
-
-    return $facebook_login->create_jwt_token();
-  }
-
-  private function handle_account_kit($request) {
-
-    if( !isset($request['token']) ) {
-      return new WP_Error('token_missing', 'No token available');
-    }
-
-    require_once WP_JWT_PLUGIN_DIR.'/inc/social/JWT_Account_Kit_Login.php';
-
-    $account_kit = new JWT_Account_Kit_Login($request['token']);
-
-    return $account_kit->create_jwt_token();
-  }
 
 }
 $jwt_login_endpoint = new JWT_Login_Endpoint();
