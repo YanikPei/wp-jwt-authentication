@@ -1,0 +1,167 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP-JSON-Web-Token Authentication 1.2.0\n"
+"POT-Creation-Date: 2016-04-17 20:38+0200\n"
+"PO-Revision-Date: 2016-04-17 20:38+0200\n"
+"Last-Translator: Yanik Peiffer <yanikpeiffer@gmail.com>\n"
+"Language-Team: Yanik Peiffer <yaikpeiffer@gmail.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;esc_httr_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: inc/admin/settings/jwt-settings-account-kit.php:34
+msgid "Account-Kit Settings"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:38
+msgid "Account-Kit Login Buttons"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:50
+#: inc/admin/settings/jwt-settings-facebook.php:50
+msgid "Activate"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:53
+msgid "Activate account-kit authentication"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:57
+#: inc/admin/settings/jwt-settings-facebook.php:57
+msgid "App ID"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:63
+msgid "Account-Kit App Secret"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:69
+#: inc/admin/settings/jwt-settings-facebook.php:69
+msgid "Registration"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:72
+msgid "Create a new user if no user matching the account-kit id was found."
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:76
+msgid "Email"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:79
+msgid "Add a login button to login with a e-mail-address."
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:83
+msgid "Phone"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-account-kit.php:86
+msgid "Add a login button to login with a phone number."
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-facebook.php:34
+msgid "Facebook Settings"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-facebook.php:38
+msgid "Facebook Login Button"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-facebook.php:53
+msgid "Activate facebook authentication"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-facebook.php:63
+msgid "App Secret"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-facebook.php:72
+msgid "Create a new user if no user matching the facebook id was found."
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-facebook.php:76
+msgid "Show button"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-facebook.php:79
+msgid "Show a \"Login with facebook\" button."
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-general.php:34
+msgid "General"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-general.php:46
+msgid "Secret"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-general.php:49
+msgid "Generate a secret"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-general.php:49
+msgid "and copy it in here"
+msgstr ""
+
+#: inc/admin/settings/jwt-settings-general.php:53
+msgid "Expiration (in seconds)"
+msgstr ""
+
+#: inc/class-jwt-login-endpoint.php:57
+msgid "Authentication failed."
+msgstr ""
+
+#: inc/class-jwt-login-endpoint.php:74
+msgid "Username/Password combination is invalid"
+msgstr ""
+
+#: inc/social/JWT_Account_Kit_Login.php:31
+msgid "No token available"
+msgstr ""
+
+#: inc/social/JWT_Account_Kit_Login.php:42
+msgid "Account-Kit app id is missing"
+msgstr ""
+
+#: inc/social/JWT_Account_Kit_Login.php:46
+msgid "Account-Kit app secret is missing"
+msgstr ""
+
+#: inc/social/JWT_Account_Kit_Login.php:58
+msgid "No user matching the account kit id was found"
+msgstr ""
+
+#: inc/social/JWT_Account_Kit_Login.php:68
+#: inc/social/JWT_Facebook_Login.php:159
+msgid "No token or code available"
+msgstr ""
+
+#: inc/social/JWT_Account_Kit_Login.php:158
+msgid "Login via SMS"
+msgstr ""
+
+#: inc/social/JWT_Account_Kit_Login.php:162
+msgid "Login via Email"
+msgstr ""
+
+#: inc/social/JWT_Facebook_Login.php:100
+msgid "No user matching the facebook id was found"
+msgstr ""
+
+#: inc/social/JWT_Facebook_Login.php:252
+msgid "Login with facebook"
+msgstr ""
+
+#: wp-jwt-authentication.php:98
+msgid ""
+"In order to use JWT for the Rest-API you have to set a <strong>secret</"
+"strong>. <a href=\"/wp-admin/options-general.php?"
+"page=jwt_admin_page&tab=general\">Go to settings</a>"
+msgstr ""

@@ -3,9 +3,10 @@
 /*
  * Plugin Name: WP-JSON-Web-Token Authentication
  * Description: This plugin creates endpoints for wp-rest-api (v2) in order to use JSON-Web-Token as an authentication-method.
- * Version:     1.1.0
+ * Version:     1.2.0
  * Author:      Yanik Peiffer
  * Text Domain: wp_jwt_auth
+ * Domain Path: /languages/
 */
 
 defined( 'ABSPATH' ) or die( 'No!' );
@@ -66,10 +67,25 @@ class WP_JWT_Authentication {
    */
   function add_hooks() {
     add_filter( 'determine_current_user', array($this, 'rest_jwt_auth_handler'), 20 );
+    add_action( 'init', array($this, 'load_textdomain') );
 
     if( empty(get_option('jwt_secret')) ) {
       add_action( 'admin_notices', array($this, 'required_jwt_secret') );
     }
+  }
+
+  /**
+  * Load textdomain
+  */
+  function load_textdomain() {
+    // load_plugin_textdomain( 'wp_jwt_auth', false, WP_JWT_PLUGIN_DIR . '/languages' );
+
+    $domain = 'wp_jwt_auth';
+    // The "plugin_locale" filter is also used in load_plugin_textdomain()
+    $locale = apply_filters('plugin_locale', get_locale(), $domain);
+
+    load_textdomain($domain, WP_LANG_DIR.'/wp-jwt-authentication/'.$domain.'-'.$locale.'.mo');
+    load_plugin_textdomain($domain, FALSE, dirname(plugin_basename(__FILE__)).'/languages/');
   }
 
   /**
