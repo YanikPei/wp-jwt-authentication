@@ -58,8 +58,8 @@ abstract class JWT_Settings {
     foreach($sections as $section) {
       settings_fields($section['id']);
       do_settings_sections($section['id']);
-      submit_button();
     }
+    submit_button();
   }
 
   /**

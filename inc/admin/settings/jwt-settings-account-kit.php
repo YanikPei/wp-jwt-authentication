@@ -30,6 +30,10 @@ class JWT_Settings_Account_Kit extends JWT_Settings {
       array(
         'id'    =>  'jwt_account_kit',
         'title' =>  'Account-Kit Settings'
+      ),
+      array(
+        'id'    =>  'jwt_account_kit_button',
+        'title' =>  'Account-Kit Login Buttons'
       )
     );
   }
@@ -64,6 +68,20 @@ class JWT_Settings_Account_Kit extends JWT_Settings {
         'type'    =>  'checkbox',
         'section' =>  'jwt_account_kit',
         'label'   =>  __('Create a new user if no user matching the account-kit id was found.', 'jwt')
+      ),
+      array(
+        'id'      =>  'jwt_account_kit_email_button',
+        'title'   =>  __('Email', 'jwt'),
+        'type'    =>  'checkbox',
+        'section' =>  'jwt_account_kit_button',
+        'label'   =>  __('Add a login button to login with a e-mail-address.', 'jwt')
+      ),
+      array(
+        'id'      =>  'jwt_account_kit_phone_button',
+        'title'   =>  __('Phone', 'jwt'),
+        'type'    =>  'checkbox',
+        'section' =>  'jwt_account_kit_button',
+        'label'   =>  __('Add a login button to login with a phone number.', 'jwt')
       ),
     );
   }

@@ -13,6 +13,11 @@ class JWT_Account_Kit_Login {
     if( is_admin() ) {
       include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-account-kit.php');
     }
+
+    if( get_option('jwt_account_kit_email_button') || get_option('jwt_account_kit_phone_button') ) {
+      add_action('login_head', array($this, 'login_form_head'));
+      add_action( 'login_form', array($this, 'login_form_button') );
+    }
   }
 
   public function handle_authentication($return, $request) {
@@ -121,6 +126,40 @@ class JWT_Account_Kit_Login {
 
       return $user_id;
     }
+  }
+
+  public function login_form_head() {
+    echo '<script src="https://sdk.accountkit.com/en_EN/sdk.js"></script>';
+    echo '<script>
+      AccountKit_OnInteractive = function(){
+        AccountKit.init(
+          {
+            appId:'.get_option('jwt_account_kit_app_id').',
+            state:"{{csrf}}",
+            version:"v1.0"
+          }
+        );
+      };
+    </script>';
+    echo '<script src="'.WP_JWT_PLUGIN_DIR_URL.'assets/js/account_kit_login.js"></script>';
+    echo '<link rel="stylesheet" type="text/css" href="'.WP_JWT_PLUGIN_DIR_URL.'assets/css/account_kit_login.css" />';
+  }
+
+  public function login_form_button() {
+
+    echo '<input type="hidden" name="token" id="token" />';
+    echo '<input type="hidden" name="method" id="method" value="account_kit" />';
+    echo '<input type="hidden" name="set_wp_cookie" value="true" />';
+    echo '<input type="hidden" name="redirect_to" value="'.get_bloginfo('url').'" />';
+
+    if( get_option('jwt_account_kit_phone_button') ) {
+      echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick();">'.__('Login via SMS', 'jwt').'</a><br />';
+    }
+
+    if( get_option('jwt_account_kit_email_button') ) {
+      echo '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick();">'.__('Login via Email', 'jwt').'</a><br />';
+    }
+
   }
 
 }
