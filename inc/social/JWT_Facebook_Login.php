@@ -30,7 +30,7 @@ class JWT_Facebook_Login {
   private $fb_graph;
 
   /**
-  * Constructor for the facebook class. Initializes FB-Graph-API.
+  * Constructor for the facebook class. Registers auth handler and includes settings.
   */
   function __construct() {
     add_filter('jwt_login_method_facebook', array($this, 'handle_authentication'), 10, 2);
@@ -41,6 +41,9 @@ class JWT_Facebook_Login {
 
   }
 
+  /**
+  * Handles authentication
+  */
   public function handle_authentication($return, $request) {
     if( ! get_option('jwt_fb_active') ) {
       return $return;
