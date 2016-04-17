@@ -78,10 +78,7 @@ class WP_JWT_Authentication {
   * Load textdomain
   */
   function load_textdomain() {
-    // load_plugin_textdomain( 'wp_jwt_auth', false, WP_JWT_PLUGIN_DIR . '/languages' );
-
     $domain = 'wp_jwt_auth';
-    // The "plugin_locale" filter is also used in load_plugin_textdomain()
     $locale = apply_filters('plugin_locale', get_locale(), $domain);
 
     load_textdomain($domain, WP_LANG_DIR.'/wp-jwt-authentication/'.$domain.'-'.$locale.'.mo');
