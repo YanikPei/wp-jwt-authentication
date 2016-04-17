@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit; 
+
 define('JWT_ACCOUNT_KIT_META_KEY', '_jwt_account_kit_userid');
 
 class JWT_Account_Kit_Login {

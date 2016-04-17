@@ -8,6 +8,8 @@
  *
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; 
+
 class JWT_Admin {
 
   /**

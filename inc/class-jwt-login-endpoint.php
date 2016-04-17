@@ -11,6 +11,8 @@
  *
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; 
+
 define('JWT_SOCIAL_REDIRECT', get_bloginfo('url').'/wp-json/wp-jwt/v1/login');
 
 class JWT_Login_Endpoint {

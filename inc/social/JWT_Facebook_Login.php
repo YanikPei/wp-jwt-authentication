@@ -11,6 +11,8 @@
  * @since 1.0.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; 
+
 define('JWT_FACEBOOK_META_KEY', '_jwt_facebook_userid');
 
 class JWT_Facebook_Login {

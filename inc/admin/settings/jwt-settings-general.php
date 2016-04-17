@@ -8,6 +8,8 @@
  *
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; 
+
 class JWT_Settings_General extends JWT_Settings {
 
   /**
