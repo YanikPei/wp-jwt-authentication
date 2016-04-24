@@ -1,16 +1,16 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) exit; 
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-define('JWT_ACCOUNT_KIT_META_KEY', '_jwt_account_kit_userid');
+define( 'JWT_ACCOUNT_KIT_META_KEY', '_jwt_account_kit_userid' );
 
 class JWT_Account_Kit_Login {
-  private $token;
-  private $user_id;
-  private $access_token;
+	private $token;
+	private $user_id;
+	private $access_token;
 
-  function __construct() {
-    add_filter('jwt_login_method_account_kit', array($this, 'handle_authentication'), 10, 2);
+	function __construct() {
+		add_filter( 'jwt_login_method_account_kit', array( $this, 'handle_authentication' ), 10, 2 );
 
     if( is_admin() ) {
       include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-account-kit.php');
@@ -131,7 +131,7 @@ class JWT_Account_Kit_Login {
   }
 
   public function login_form_head() {
-    echo '<script src="//sdk.accountkit.com/en_EN/sdk.js"></script>';
+    echo '<script src="https://sdk.accountkit.com/en_US/sdk.js"></script>';
     echo '<script>
       AccountKit_OnInteractive = function(){
         AccountKit.init(
