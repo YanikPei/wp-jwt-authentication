@@ -6,8 +6,8 @@
     <?php } ?>
   </h2>
 
-  <form method="post" action="options.php">
-    <?php do_action( 'jwt_settings_' . $current_tab ); ?>
-  </form>
+
+  <?php do_action( 'jwt_settings_' . $current_tab ); ?>
+
 
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) exit; 
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Abstract settings class
@@ -58,10 +58,13 @@ abstract class JWT_Settings {
 
     // output settings
     foreach($sections as $section) {
+      echo '<form method="post" action="options.php">';
       settings_fields($section['id']);
       do_settings_sections($section['id']);
+      submit_button();
+      echo '</form>';
     }
-    submit_button();
+
   }
 
   /**
