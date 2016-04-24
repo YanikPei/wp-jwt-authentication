@@ -1,32 +1,33 @@
 # JSON-Web-Token for WordPress
 
-Authenticate to WordPress-Rest-API using JSON-Web-Tokens.
+Authenticate to WordPress using JSON-Web-Tokens.
+
+* Easy to use authentication methods for WordPress Rest-API and Backend
+* Authenticate via username and password
+* Authenticate via AccountKit
+* Authenticate via Facebook
+* Give users the possibility to register/login via email, phone number or facebook
+
+![Login](http://ypeiffer.com/wp-content/uploads/2016/04/Bildschirmfoto-2016-04-24-um-14.25.09.png)
 
 
 ## What are JSON-Web-Tokens
 
 > JSON Web Tokens are an open, industry standard RFC 7519 method for representing claims securely between two parties.
 
-What this quote is trying to say is that JSON-Web-Tokens are super awesome for authenticating to an api
-without dealing with OAuth. The server creates a unique token for a user which is sent with every api-request.
-
+[More on JWT](https://jwt.io/)
 
 ## Installation
 
 * Download the latest version.
 * Upload the entire folder to the /wp-content/plugins/ directory.
-* Activate the plugin through the 'Plugins' menu in WordPress.
+* Activate the plugin
 * Go to `settings -> JWT` and create a secret
 
 
 ## Requirements
 
-* WordPress 4.4
-
-
-## Using the plugin
-
-After installing the plugin, a new endpoint is added to your wp-rest-api: `/wp-json/wp-jwt/v1/login`
+* WordPress 4.4 or higher
 
 
 ### Authenticate via username and password
@@ -39,13 +40,8 @@ GET http://YOUR_URL/wp-json/wp-jwt/v1/login?username=USERNAME&password=PASSWORD
 
 ### Authenticate via facebook
 
-**First you have to create a [facebook-app](https://developers.facebook.com/docs/apps/register).**
+[Wiki: Set up Facebook](https://github.com/YanikPei/wp-jwt-authentication/wiki/Set-up-Facebook)
 
-In order to authenticate via facebook, you have to make a GET-request to this endpoint by passing the method and a access-token/code from the facebook login ([developers.facebook.com](https://developers.facebook.com/docs/facebook-login/access-tokens)).
-You will receive a JWT to access endpoints that require authorization.
+### Authenticate via AccountKit
 
-**Make sure to enter the facebook app-id and secrect in plugins settings.**
-
-```
-GET http://YOUR_URL/wp-json/wp-jwt/v1/login?method=facebook&token=FB_ACCESS_TOKEN_OR_CODE
-```
+[Wiki: Set up AccountKit](https://github.com/YanikPei/wp-jwt-authentication/wiki/Set-up-AccountKit)
