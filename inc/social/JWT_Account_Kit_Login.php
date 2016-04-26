@@ -38,11 +38,13 @@ class JWT_Account_Kit_Login {
   }
 
   public function create_jwt_token() {
-    if( empty(get_option('jwt_account_kit_app_id')) ) {
+		$token_app_id = get_option('jwt_account_kit_app_id');
+    if( empty($token_app_id) ) {
       return new WP_Error('app_id_missing', __('Account-Kit app id is missing', 'wp_jwt_auth'));
     }
 
-    if( empty(get_option('jwt_account_kit_app_secret')) ) {
+		$token_app_secret = get_option('jwt_account_kit_app_secret');
+    if( empty($token_app_secret) ) {
       return new WP_Error('app_id_missing', __('Account-Kit app secret is missing', 'wp_jwt_auth'));
     }
 
