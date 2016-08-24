@@ -13,7 +13,7 @@
 use Firebase\JWT\JWT;
 use Zend\Http\PhpEnvironment\Request;
 
-class JWT_Functions {
+class WAK_Functions {
 
   /**
    * Create a token for a user.

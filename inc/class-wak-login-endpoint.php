@@ -20,8 +20,8 @@ class JWT_Login_Endpoint {
   function __construct() {
     add_action( 'rest_api_init', array($this, 'register') );
 
-    require_once WP_JWT_PLUGIN_DIR.'inc/social/JWT_Account_Kit_Login.php';
-    require_once WP_JWT_PLUGIN_DIR.'inc/social/JWT_Facebook_Login.php';
+    require_once WAK_PLUGIN_DIR.'inc/social/WAK_Account_Kit_Login.php';
+    require_once WAK_PLUGIN_DIR.'inc/social/WAK_Facebook_Login.php';
   }
 
   /**
@@ -34,7 +34,7 @@ class JWT_Login_Endpoint {
    * @return void
    */
   function register() {
-    register_rest_route( WP_JWT_ENDPOINT_NAMESPACE, '/login', array(
+    register_rest_route( WAK_JWT_ENDPOINT_NAMESPACE, '/login', array(
         'methods' => 'GET',
         'callback' => array($this, 'action'),
         'args' => array(
@@ -58,13 +58,13 @@ class JWT_Login_Endpoint {
 
     if( isset($request['method']) ) { // if user wants to login by social-media-account
 
-      $return = apply_filters('jwt_login_method_'.$request['method'], $return, $request);
+      $return = apply_filters('wak_login_method_'.$request['method'], $return, $request);
 
     } else { // if user wants to login by username/password
       $username = $request['username'];
       $password = $request['password'];
 
-      $jwt_functions = new JWT_Functions();
+      $jwt_functions = new WAK_Functions();
 
       $user = get_user_by( 'login', $username );
 
