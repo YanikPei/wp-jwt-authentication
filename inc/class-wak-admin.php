@@ -21,6 +21,7 @@ class JWT_Admin {
 
     include_once(WAK_PLUGIN_DIR.'/inc/admin/settings/wak-settings-class.php');
     include(WAK_PLUGIN_DIR.'/inc/admin/settings/wak-settings-general.php');
+    include(WAK_PLUGIN_DIR.'/inc/admin/class-wak-welcome-page.php');
   }
 
   /**
