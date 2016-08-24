@@ -13,9 +13,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; 
 
-define('JWT_FACEBOOK_META_KEY', '_jwt_facebook_userid');
+define('WAK_FACEBOOK_META_KEY', '_wak_facebook_userid');
 
-class JWT_Facebook_Login {
+class WAK_Facebook_Login {
   /* @var string Token that has to be validated */
   private $token;
 
@@ -35,13 +35,13 @@ class JWT_Facebook_Login {
   * Constructor for the facebook class. Registers auth handler and includes settings.
   */
   function __construct() {
-    add_filter('jwt_login_method_facebook', array($this, 'handle_authentication'), 10, 2);
+    add_filter('wak_login_method_facebook', array($this, 'handle_authentication'), 10, 2);
 
     if( is_admin() ) {
       include(WAK_PLUGIN_DIR.'/inc/admin/settings/wak-settings-facebook.php');
     }
 
-    if( get_option('jwt_fb_login_button') ) {
+    if( get_option('wak_fb_login_button') ) {
       add_action('login_head', array($this, 'login_form_head'));
       add_action( 'login_form', array($this, 'login_form_button') );
     }
@@ -52,7 +52,7 @@ class JWT_Facebook_Login {
   * Handles authentication
   */
   public function handle_authentication($return, $request) {
-    if( ! get_option('jwt_fb_active') ) {
+    if( ! get_option('wak_fb_active') ) {
       return $return;
     }
 
@@ -71,8 +71,8 @@ class JWT_Facebook_Login {
     }
 
     $this->fb_graph = new Facebook\Facebook([
-      'app_id' => get_option('jwt_fb_app_id'),
-      'app_secret' => get_option('jwt_fb_app_secret'),
+      'app_id' => get_option('wak_fb_app_id'),
+      'app_secret' => get_option('wak_fb_app_secret'),
       'default_graph_version' => 'v2.5',
     ]);
 
@@ -97,7 +97,7 @@ class JWT_Facebook_Login {
     $this->user_id = $this->check_user_status();
 
     if( ! $this->user_id || is_wp_error($this->user_id) ) {
-      return new WP_Error('no_user_found', __('No user matching the facebook id was found', 'wp_jwt_auth'));
+      return new WP_Error('no_user_found', __('No user matching the facebook id was found', 'wp-authentication-kit'));
     }
 
     return $jwt_functions->create_token($this->user_id);
@@ -108,7 +108,7 @@ class JWT_Facebook_Login {
   * and fetch the required data from facebook (e.g. email, first_name, last_name)
   */
   private function check_user_status() {
-    $user = get_users(array('meta_key' => JWT_FACEBOOK_META_KEY, 'meta_value' => $this->user_id, 'fields' => 'ID'));
+    $user = get_users(array('meta_key' => WAK_FACEBOOK_META_KEY, 'meta_value' => $this->user_id, 'fields' => 'ID'));
 
     if( ! empty($user) ) { // User does exist
 
@@ -116,7 +116,7 @@ class JWT_Facebook_Login {
 
     } else { // User does NOT exist
 
-      if( ! get_option('jwt_fb_create_user') ) {
+      if( ! get_option('wak_fb_create_user') ) {
         return false;
       }
 
@@ -139,7 +139,7 @@ class JWT_Facebook_Login {
 
       if( is_numeric($user_id) ) {
         wp_update_user( array( 'ID' => $user_id, 'first_name' => $fb_user['first_name'], 'last_name' => $fb_user['last_name'], 'role' => 'editor' ) );
-        update_user_meta( $user_id, JWT_FACEBOOK_META_KEY, $this->user_id );
+        update_user_meta( $user_id, WAK_FACEBOOK_META_KEY, $this->user_id );
       } else {
         return new WP_Error('registration_error', $user_id->get_error_message());
       }
@@ -156,7 +156,7 @@ class JWT_Facebook_Login {
   private function check_identity() {
 
     if( $this->token == null && $this->code == null ) {
-      return new WP_Error('no_token_or_code', __('No token or code available', 'wp_jwt_auth'));
+      return new WP_Error('no_token_or_code', __('No token or code available', 'wp-authentication-kit'));
     }
 
     if( $this->token != null ) {
@@ -188,7 +188,7 @@ class JWT_Facebook_Login {
       return $token;
     }
 
-    $response_json = Requests::get("https://graph.facebook.com/debug_token?input_token=$token&access_token=".get_option('jwt_fb_app_id').urlencode('|').get_option('jwt_fb_app_secret'));
+    $response_json = Requests::get("https://graph.facebook.com/debug_token?input_token=$token&access_token=".get_option('wak_fb_app_id').urlencode('|').get_option('wak_fb_app_secret'));
 
     $response = json_decode($response_json->body);
 
@@ -209,7 +209,7 @@ class JWT_Facebook_Login {
 
     var_dump($_GET);
 
-    $response_json = Requests::get("https://graph.facebook.com/v2.3/oauth/access_token?client_id=".get_option('jwt_fb_app_id')."&redirect_uri=".$redirect_uri."&client_secret=".get_option('jwt_fb_app_secret')."&code=$this->code");
+    $response_json = Requests::get("https://graph.facebook.com/v2.3/oauth/access_token?client_id=".get_option('wak_fb_app_id')."&redirect_uri=".$redirect_uri."&client_secret=".get_option('wak_fb_app_secret')."&code=$this->code");
 
     $response = json_decode($response_json->body);
 
@@ -234,7 +234,7 @@ class JWT_Facebook_Login {
 
         window.fbAsyncInit = function() {
           FB.init({
-            appId      : "'.get_option('jwt_fb_app_id').'",
+            appId      : "'.get_option('wak_fb_app_id').'",
             cookie     : true,
             xfbml      : true,
             version    : "v2.2"
@@ -249,12 +249,12 @@ class JWT_Facebook_Login {
 
     $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');
 
-    echo '<a href="#" onclick="fbLoginButton(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=facebook&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');" class="button-secondary facebook-btn">'.__('Login with facebook', 'wp_jwt_auth').'</a><br />';
+    echo '<a href="#" onclick="fbLoginButton(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=facebook&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');" class="button-secondary facebook-btn">'.__('Login with facebook', 'wp-authentication-kit').'</a><br />';
 
   }
 
 }
 
-return new JWT_Facebook_Login();
+return new WAK_Facebook_Login();
 
 ?>
