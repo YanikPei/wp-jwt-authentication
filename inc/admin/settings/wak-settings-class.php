@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  */
 
-abstract class JWT_Settings {
+abstract class WAK_Settings {
 
   /* @var string settings-id */
   protected $id;
@@ -22,9 +22,9 @@ abstract class JWT_Settings {
   * Constructor adds settings tabm registers settings, prints settings
   */
   public function __construct() {
-    add_filter('jwt_settings_tabs_array', array($this, 'add_settings_tab'), 20);
-    add_action('jwt_register_settings', array($this, 'register_settings') );
-    add_action('jwt_settings_' . $this->id, array($this, 'output'));
+    add_filter('wak_settings_tabs_array', array($this, 'add_settings_tab'), 20);
+    add_action('wak_register_settings', array($this, 'register_settings') );
+    add_action('wak_settings_' . $this->id, array($this, 'output'));
   }
 
   /**

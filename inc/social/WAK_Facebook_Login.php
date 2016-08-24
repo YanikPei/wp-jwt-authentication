@@ -38,7 +38,7 @@ class JWT_Facebook_Login {
     add_filter('jwt_login_method_facebook', array($this, 'handle_authentication'), 10, 2);
 
     if( is_admin() ) {
-      include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-facebook.php');
+      include(WAK_PLUGIN_DIR.'/inc/admin/settings/wak-settings-facebook.php');
     }
 
     if( get_option('jwt_fb_login_button') ) {
@@ -92,7 +92,7 @@ class JWT_Facebook_Login {
       return $identity;
     }
 
-    $jwt_functions = new JWT_Functions();
+    $jwt_functions = new WAK_Functions();
 
     $this->user_id = $this->check_user_status();
 
@@ -221,7 +221,7 @@ class JWT_Facebook_Login {
   }
 
   public function login_form_head() {
-    echo '<link rel="stylesheet" type="text/css" href="'.WP_JWT_PLUGIN_DIR_URL.'assets/css/facebook_login.css" />';
+    echo '<link rel="stylesheet" type="text/css" href="'.WAK_PLUGIN_DIR_URL.'assets/css/facebook_login.css" />';
     echo '<script>
               (function(d, s, id) {
           var js, fjs = d.getElementsByTagName(s)[0];
@@ -242,7 +242,7 @@ class JWT_Facebook_Login {
 
         };
           </script>';
-    echo '<script src="'.WP_JWT_PLUGIN_DIR_URL.'assets/js/facebook_login.js"></script>';
+    echo '<script src="'.WAK_PLUGIN_DIR_URL.'assets/js/facebook_login.js"></script>';
   }
 
   public function login_form_button() {

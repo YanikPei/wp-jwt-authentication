@@ -1,29 +1,29 @@
 <?php
 /*
-Plugin Name: WP-JSON-Web-Token Authentication
-Description: This plugin creates endpoints for wp-rest-api (v2) in order to use JSON-Web-Token as an authentication-method.
-Version:     1.2.3
+Plugin Name: WordPress Authentication Kit
+Description: Login to WordPress via social networks
+Version:     2.0.0
 Author:      Yanik Peiffer
-Text Domain: wp_jwt_auth
+Text Domain: wp_authentication_kit
 Domain Path: /languages/
 */
 
 defined( 'ABSPATH' ) or die( 'No!' );
 
-define( 'WP_JWT_PLUGIN_DIR', plugin_dir_path(__FILE__) );
-define( 'WP_JWT_PLUGIN_DIR_URL', plugin_dir_url(__FILE__) );
-define( 'WP_JWT_ENDPOINT_NAMESPACE', 'wp-jwt/v1' );
+define( 'WAK_PLUGIN_DIR', plugin_dir_path(__FILE__) );
+define( 'WAK_PLUGIN_DIR_URL', plugin_dir_url(__FILE__) );
+define( 'WAK_JWT_ENDPOINT_NAMESPACE', 'wp-jwt/v1' );
 
 /**
   * Require composer autoload to load necessary classes.
 */
-if (!file_exists(WP_JWT_PLUGIN_DIR . '/vendor/autoload.php')) {
-  throw new Error('Please execute `composer install` in ' . WP_JWT_PLUGIN_DIR . ' and try again! | ');
+if (!file_exists(WAK_PLUGIN_DIR . '/vendor/autoload.php')) {
+  throw new Error('Please execute `composer install` in ' . WAK_PLUGIN_DIR . ' and try again! | ');
 } else {
-  require_once WP_JWT_PLUGIN_DIR . '/vendor/autoload.php';
+  require_once WAK_PLUGIN_DIR . '/vendor/autoload.php';
 }
 
-class WP_JWT_Authentication {
+class WP_Authentication_Kit {
 
   public function __construct() {
     $this->add_hooks();
@@ -42,19 +42,19 @@ class WP_JWT_Authentication {
     /**
       * Require jwt-functions to use them in this plugin.
     */
-    require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-functions.php';
+    require_once WAK_PLUGIN_DIR.'inc/class-wak-functions.php';
 
     /**
     * Require jwt-admin if user is in backend
     */
     if( is_admin() ) {
-      require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-admin.php';
+      require_once WAK_PLUGIN_DIR.'inc/class-wak-admin.php';
     }
 
     /**
       * Require jwt-login-endpoint to register endpoint.
     */
-    require_once WP_JWT_PLUGIN_DIR.'inc/class-jwt-login-endpoint.php';
+    require_once WAK_PLUGIN_DIR.'inc/class-wak-login-endpoint.php';
   }
 
   /**
@@ -107,7 +107,7 @@ class WP_JWT_Authentication {
    * @return int Logged in user id.
    */
   function rest_jwt_auth_handler($user) {
-    $jwt_functions = new JWT_Functions();
+    $jwt_functions = new WAK_Functions();
 
     $jwt_return = $jwt_functions->validate_token();
 
@@ -120,8 +120,8 @@ class WP_JWT_Authentication {
 
 }
 
-if( class_exists( 'WP_JWT_Authentication' ) ) {
-    $wp_jwt_auth = new WP_JWT_Authentication();
+if( class_exists( 'WP_Authentication_Kit' ) ) {
+    $wp_authentication_kit = new WP_Authentication_Kit();
 }
 
 ?>

@@ -1,8 +1,8 @@
 <?php
 
-require_once "./inc/class-jwt-functions.php";
+require_once "./inc/class-wak-functions.php";
 
-$functions = new JWT_Functions();
+$functions = new WAK_Functions();
 
 echo $functions->create_secret();
 

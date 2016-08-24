@@ -2,33 +2,33 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'JWT_ACCOUNT_KIT_META_KEY', '_jwt_account_kit_userid' );
+define( 'WAK_ACCOUNT_KIT_META_KEY', '_jwt_account_kit_userid' );
 
-class JWT_Account_Kit_Login {
+class WAK_Account_Kit_Login {
 	private $token;
 	private $user_id;
 	private $access_token;
 
 	function __construct() {
-		add_filter( 'jwt_login_method_account_kit', array( $this, 'handle_authentication' ), 10, 2 );
+		add_filter( 'wak_login_method_account_kit', array( $this, 'handle_authentication' ), 10, 2 );
 
     if( is_admin() ) {
-      include(WP_JWT_PLUGIN_DIR.'/inc/admin/settings/jwt-settings-account-kit.php');
+      include(WAK_PLUGIN_DIR.'/inc/admin/settings/wak-settings-account-kit.php');
     }
 
-    if( get_option('jwt_account_kit_email_button') || get_option('jwt_account_kit_phone_button') ) {
+    if( get_option('wak_account_kit_email_button') || get_option('wak_account_kit_phone_button') ) {
       add_action('login_head', array($this, 'login_form_head'));
       add_action( 'login_form', array($this, 'login_form_button') );
     }
   }
 
   public function handle_authentication($return, $request) {
-    if( ! get_option('jwt_account_kit_active') ) {
+    if( ! get_option('wak_account_kit_active') ) {
       return $return;
     }
 
     if( !isset($request['token']) ) {
-      return new WP_Error('token_missing', __('No token available', 'wp_jwt_auth'));
+      return new WP_Error('token_missing', __('No token available', 'wp-authentication-kit'));
     }
 
     $this->token = $request['token'];
@@ -38,14 +38,14 @@ class JWT_Account_Kit_Login {
   }
 
   public function create_jwt_token() {
-		$token_app_id = get_option('jwt_account_kit_app_id');
+		$token_app_id = get_option('wak_account_kit_app_id');
     if( empty($token_app_id) ) {
-      return new WP_Error('app_id_missing', __('Account-Kit app id is missing', 'wp_jwt_auth'));
+      return new WP_Error('app_id_missing', __('Account-Kit app id is missing', 'wp-authentication-kit'));
     }
 
-		$token_app_secret = get_option('jwt_account_kit_app_secret');
+		$token_app_secret = get_option('wak_account_kit_app_secret');
     if( empty($token_app_secret) ) {
-      return new WP_Error('app_id_missing', __('Account-Kit app secret is missing', 'wp_jwt_auth'));
+      return new WP_Error('app_id_missing', __('Account-Kit app secret is missing', 'wp-authentication-kit'));
     }
 
     $identity = $this->check_identity();
@@ -57,17 +57,17 @@ class JWT_Account_Kit_Login {
     $this->user_id = $this->check_user_status();
 
     if( ! $this->user_id || is_wp_error($this->user_id) ) {
-      return new WP_Error('no_user_found', __('No user matching the account kit id was found', 'wp_jwt_auth'));
+      return new WP_Error('no_user_found', __('No user matching the account kit id was found', 'wp-authentication-kit'));
     }
 
-    $jwt_functions = new JWT_Functions();
+    $jwt_functions = new WAK_Functions();
 
     return $jwt_functions->create_token($this->user_id);
   }
 
   private function check_identity() {
     if( $this->token == null ) {
-      return new WP_Error('no_token_or_code', __('No token or code available', 'wp_jwt_auth'));
+      return new WP_Error('no_token_or_code', __('No token or code available', 'wp-authentication-kit'));
     }
 
     $response_json = Requests::get("https://graph.accountkit.com/v1.0/access_token?grant_type=authorization_code&code=".$this->token."&access_token=AA".urlencode('|').get_option('jwt_account_kit_app_id').urlencode('|').get_option('jwt_account_kit_app_secret'));
@@ -85,7 +85,7 @@ class JWT_Account_Kit_Login {
   }
 
   private function check_user_status() {
-    $user = get_users(array('meta_key' => JWT_ACCOUNT_KIT_META_KEY, 'meta_value' => $this->user_id, 'fields' => 'ID'));
+    $user = get_users(array('meta_key' => WAK_ACCOUNT_KIT_META_KEY, 'meta_value' => $this->user_id, 'fields' => 'ID'));
 
     if( ! empty($user) ) { // User does exist
 
@@ -93,7 +93,7 @@ class JWT_Account_Kit_Login {
 
     } else { // User does NOT exist
 
-      if( ! get_option('jwt_account_kit_create_user') ) {
+      if( ! get_option('wak_account_kit_create_user') ) {
         return false;
       }
 
@@ -123,7 +123,7 @@ class JWT_Account_Kit_Login {
 
       if( is_numeric($user_id) ) {
         wp_update_user( array( 'ID' => $user_id, 'first_name' => '', 'last_name' => '', 'role' => 'editor' ) );
-        update_user_meta( $user_id, JWT_ACCOUNT_KIT_META_KEY, $this->user_id );
+        update_user_meta( $user_id, WAK_ACCOUNT_KIT_META_KEY, $this->user_id );
       } else {
         return new WP_Error('registration_error', $user_id->get_error_message());
       }
@@ -138,15 +138,15 @@ class JWT_Account_Kit_Login {
       AccountKit_OnInteractive = function(){
         AccountKit.init(
           {
-            appId:'.get_option('jwt_account_kit_app_id').',
+            appId:'.get_option('wak_account_kit_app_id').',
             state:"{{csrf}}",
             version:"v1.0"
           }
         );
       };
     </script>';
-    echo '<script src="'.WP_JWT_PLUGIN_DIR_URL.'assets/js/account_kit_login.js"></script>';
-    echo '<link rel="stylesheet" type="text/css" href="'.WP_JWT_PLUGIN_DIR_URL.'assets/css/account_kit_login.css" />';
+    echo '<script src="'.WAK_PLUGIN_DIR_URL.'assets/js/account_kit_login.js"></script>';
+    echo '<link rel="stylesheet" type="text/css" href="'.WAK_PLUGIN_DIR_URL.'assets/css/account_kit_login.css" />';
   }
 
   public function login_form_button() {
@@ -156,18 +156,18 @@ class JWT_Account_Kit_Login {
     echo '<input type="hidden" name="set_wp_cookie" value="true" />';
     echo '<input type="hidden" name="redirect_to" value="'.get_bloginfo('url').'" />';
 
-    if( get_option('jwt_account_kit_phone_button') ) {
-      echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick();">'.__('Login via SMS', 'wp_jwt_auth').'</a><br />';
+    if( get_option('wak_account_kit_phone_button') ) {
+      echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick();">'.__('Login via SMS', 'wp-authentication-kit').'</a><br />';
     }
 
-    if( get_option('jwt_account_kit_email_button') ) {
-      echo '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick();">'.__('Login via Email', 'wp_jwt_auth').'</a><br />';
+    if( get_option('wak_account_kit_email_button') ) {
+      echo '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick();">'.__('Login via Email', 'wp-authentication-kit').'</a><br />';
     }
 
   }
 
 }
 
-return new JWT_Account_Kit_Login();
+return new WAK_Account_Kit_Login();
 
 ?>
