@@ -27,7 +27,7 @@ class JWT_Admin {
   * Register settings page
   */
   function wak_register_admin_page() {
-    add_options_page( 'JWT', 'JWT', 'manage_options', 'wak_admin_page', array($this, 'wak_admin_page')  );
+    add_options_page( 'Authentication Kit', 'Authentication Kit', 'manage_options', 'wak_admin_page', array($this, 'wak_admin_page')  );
   }
 
   /**

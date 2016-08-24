@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: WordPress Authentication Kit
-Description: Login to WordPress via social networks
+Description: Login to WordPress and WP-Rest-API via social networks.
 Version:     2.0.0
 Author:      Yanik Peiffer
 Text Domain: wp_authentication_kit
