@@ -32,10 +32,6 @@ class WAK_Settings_Facebook extends WAK_Settings {
       array(
         'id'    =>  'wak_facebook',
         'title' =>  __('Facebook Settings', 'wp-authentication-kit')
-      ),
-      array(
-        'id'    =>  'wak_facebook_button',
-        'title' =>  __('Facebook Login Button', 'wp-authentication-kit')
       )
     );
   }
@@ -54,13 +50,13 @@ class WAK_Settings_Facebook extends WAK_Settings {
       ),
       array(
         'id'      =>  'wak_fb_app_id',
-        'title'   =>  __('App ID', 'wp-authentication-kit'),
+        'title'   =>  __('Facebook App ID', 'wp-authentication-kit'),
         'type'    =>  'text',
         'section' =>  'wak_facebook'
       ),
       array(
         'id'      =>  'wak_fb_app_secret',
-        'title'   =>  __('App Secret', 'wp-authentication-kit'),
+        'title'   =>  __('Facebook App Secret', 'wp-authentication-kit'),
         'type'    =>  'text',
         'section' =>  'wak_facebook'
       ),
@@ -75,8 +71,8 @@ class WAK_Settings_Facebook extends WAK_Settings {
         'id'      =>  'wak_fb_login_button',
         'title'   =>  __('Show button', 'wp-authentication-kit'),
         'type'    =>  'checkbox',
-        'section' =>  'wak_facebook_button',
-        'label'   =>  __('Show a "Login with facebook" button.', 'wp-authentication-kit')
+        'section' =>  'wak_facebook',
+        'label'   =>  __('Show the "Login with facebook" button on wp-login.', 'wp-authentication-kit')
       ),
     );
   }
