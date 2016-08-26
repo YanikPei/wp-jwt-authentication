@@ -30,6 +30,10 @@ class WP_Authentication_Kit {
     $this->load_classes();
   }
 
+  function welcome_screen_activate() {
+    set_transient( '_welcome_screen_activation_redirect', true, 30 );
+  }
+
   /**
    * Load all classes.
    *
@@ -121,7 +125,12 @@ class WP_Authentication_Kit {
 }
 
 if( class_exists( 'WP_Authentication_Kit' ) ) {
-    $wp_authentication_kit = new WP_Authentication_Kit();
+  $wp_authentication_kit = new WP_Authentication_Kit();
+
+  /**
+   * register activation hook
+   */
+  register_activation_hook(__FILE__, array($wp_authentication_kit, 'welcome_screen_activate'));
 }
 
 ?>

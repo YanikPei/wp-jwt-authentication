@@ -64,7 +64,7 @@ class WAK_Functions {
    *
    * @return string random secret.
    */
-  function create_secret() {
+  public static function create_secret() {
     return base64_encode( openssl_random_pseudo_bytes(64) );
   }
 
