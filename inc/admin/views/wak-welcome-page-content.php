@@ -9,7 +9,7 @@
         <li>
             <div class="wak-section">
                 <label>Generate a secret to keep your data safe</label>
-                <form action="#" id="wak_generate_secret">
+                <form action="<?php echo admin_url( 'admin-ajax.php' ); ?>" id="wak_generate_secret">
                     <div class="wak-secret-input">
                         <input type="text" class="regular-text" name="secret" placeholder="XXXXXXXXXXXX" />
                         <button class="wak-generate-secret"><?php _e('Generate', 'wp-authentication-kit'); ?></button>
