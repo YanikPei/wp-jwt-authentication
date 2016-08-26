@@ -67,9 +67,7 @@ class JWT_Admin {
    * AJAX: Generate random secret
    */
   function wak_generate_secret() {
-    $functions = new WAK_Functions();
-
-    echo $functions->create_secret();
+    echo WAK_Functions::create_secret();
 
     die();
   }

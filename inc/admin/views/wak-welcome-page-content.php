@@ -9,9 +9,13 @@
         <li>
             <div class="wak-section">
                 <label>Generate a secret to keep your data safe</label>
-                <form action="<?php echo admin_url( 'admin-ajax.php' ); ?>" id="wak_generate_secret">
+                <form action="options.php" id="wak_generate_secret">
+                    <?php wp_nonce_field('wak_general-options'); ?>
+                    <input type="hidden" name="action" value="update" />
+                    <input type="hidden" name="option_page" value="wak_general">
+
                     <div class="wak-secret-input">
-                        <input type="text" class="regular-text" name="secret" placeholder="XXXXXXXXXXXX" />
+                        <input type="text" class="regular-text" name="jwt_secret" placeholder="XXXXXXXXXXXX" />
                         <button class="wak-generate-secret"><?php _e('Generate', 'wp-authentication-kit'); ?></button>
                     </div>
                     <input type="submit" class="button-primary" value="<?php _e('Save secret', 'wp-authentication-kit'); ?>" />
