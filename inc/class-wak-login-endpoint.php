@@ -20,7 +20,7 @@ class JWT_Login_Endpoint {
   function __construct() {
     add_action( 'rest_api_init', array($this, 'register') );
 
-    require_once WAK_PLUGIN_DIR.'inc/social/WAK_Account_Kit_Login.php';
+    require_once WAK_PLUGIN_DIR.'inc/social/account-kit/WAK_Account_Kit_Login.php';
     require_once WAK_PLUGIN_DIR.'inc/social/WAK_Facebook_Login.php';
   }
 

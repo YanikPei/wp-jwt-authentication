@@ -13,7 +13,7 @@ class WAK_Account_Kit_Login {
 		add_filter( 'wak_login_method_account_kit', array( $this, 'handle_authentication' ), 10, 2 );
 
     if( is_admin() ) {
-      include(WAK_PLUGIN_DIR.'/inc/admin/settings/wak-settings-account-kit.php');
+      include('settings/wak-settings-account-kit.php');
     }
 
     if( get_option('wak_account_kit_email_button') || get_option('wak_account_kit_phone_button') ) {
@@ -145,8 +145,8 @@ class WAK_Account_Kit_Login {
         );
       };
     </script>';
-    echo '<script src="'.WAK_PLUGIN_DIR_URL.'assets/js/account_kit_login.js"></script>';
-    echo '<link rel="stylesheet" type="text/css" href="'.WAK_PLUGIN_DIR_URL.'assets/css/account_kit_login.css" />';
+    echo '<script src="'.WAK_PLUGIN_DIR_URL.'inc/social/account-kit/assets/js/account_kit_login.js"></script>';
+    echo '<link rel="stylesheet" type="text/css" href="'.WAK_PLUGIN_DIR_URL.'inc/social/account-kit/assets/css/account_kit_login.css" />';
   }
 
   public function login_form_button() {
