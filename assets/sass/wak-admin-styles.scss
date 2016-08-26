@@ -11,6 +11,7 @@ $color_black: #000000;
  */
 .wak-section {
   padding: 20px 0;
+  clear: both;
 
   label {
     display: block;
@@ -56,6 +57,12 @@ ol li {
     line-height: 23px;
     padding-left: 10px;
     border-left: 1px solid $color_light_grey;
+  }
+}
+
+.wak-form {
+  .float-left {
+    float: left;
   }
 }
 
