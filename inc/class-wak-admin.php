@@ -18,10 +18,16 @@ class JWT_Admin {
   public function __construct() {
     add_action( 'admin_menu', array($this, 'wak_register_admin_page') );
     add_action( 'admin_init', array($this, 'wak_register_settings') );
+    add_action( 'admin_enqueue_scripts', array($this, 'wak_admin_styles') );
 
     include_once(WAK_PLUGIN_DIR.'/inc/admin/settings/wak-settings-class.php');
     include(WAK_PLUGIN_DIR.'/inc/admin/settings/wak-settings-general.php');
     include(WAK_PLUGIN_DIR.'/inc/admin/class-wak-welcome-page.php');
+  }
+
+  function wak_admin_styles() {
+    wp_register_style( 'wak_admin_styles', WAK_PLUGIN_DIR_URL . '/assets/css/wak-admin-styles.css', false, '1.0.0' );
+    wp_enqueue_style( 'wak_admin_styles' );
   }
 
   /**
