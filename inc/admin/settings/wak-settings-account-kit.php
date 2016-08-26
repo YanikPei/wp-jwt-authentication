@@ -32,10 +32,6 @@ class WAK_Settings_Account_Kit extends WAK_Settings {
       array(
         'id'    =>  'wak_account_kit',
         'title' =>  __('Account-Kit Settings', 'wp-authentication-kit')
-      ),
-      array(
-        'id'    =>  'wak_account_kit_button',
-        'title' =>  __('Account-Kit Login Buttons', 'wp-authentication-kit')
       )
     );
   }
@@ -54,7 +50,7 @@ class WAK_Settings_Account_Kit extends WAK_Settings {
       ),
       array(
         'id'      =>  'wak_account_kit_app_id',
-        'title'   =>  __('App ID', 'wp-authentication-kit'),
+        'title'   =>  __('Facebook App ID', 'wp-authentication-kit'),
         'type'    =>  'text',
         'section' =>  'wak_account_kit'
       ),
@@ -73,16 +69,16 @@ class WAK_Settings_Account_Kit extends WAK_Settings {
       ),
       array(
         'id'      =>  'wak_account_kit_email_button',
-        'title'   =>  __('Email', 'wp-authentication-kit'),
+        'title'   =>  __('Email-Button', 'wp-authentication-kit'),
         'type'    =>  'checkbox',
-        'section' =>  'wak_account_kit_button',
+        'section' =>  'wak_account_kit',
         'label'   =>  __('Add a login button to login with a e-mail-address.', 'wp-authentication-kit')
       ),
       array(
         'id'      =>  'wak_account_kit_phone_button',
-        'title'   =>  __('Phone', 'wp-authentication-kit'),
+        'title'   =>  __('Phone-Button', 'wp-authentication-kit'),
         'type'    =>  'checkbox',
-        'section' =>  'wak_account_kit_button',
+        'section' =>  'wak_account_kit',
         'label'   =>  __('Add a login button to login with a phone number.', 'wp-authentication-kit')
       ),
     );
