@@ -1,3 +1,74 @@
+/*
+ * VARIABLES
+ */
+$color_white: #FFFFFF;
+$color_grey: #464b50;
+$color_light_grey: #b4b9be;
+$color_black: #000000;
+
+/*
+ * SECTIONS
+ */
 .wak-section {
   padding: 20px 0;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+.wak-center-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+ol li {
+  font-size: 1.3em;
+  color: $color_black;
+}
+
+/*
+ *  FORMS
+ */
+.wak-secret-input {
+  background: $color_white;
+  display: table;
+  padding: 10px;
+  box-shadow: 0 0 2px $color_light_grey;
+  margin-bottom: 15px;
+
+  input,
+  button {
+    height: 30px;
+    font-size: 18px;
+    color: $color_grey;
+  }
+
+  input {
+    border: 0;
+    box-shadow: none;
+  }
+
+  button {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    line-height: 23px;
+    padding-left: 10px;
+    border-left: 1px solid $color_light_grey;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .wak-secret-input {
+    input,
+    button {
+      font-size: 13px;
+      height: 25px;
+    }
+
+    button {
+      line-height: 12px;
+    }
+  }
 }
