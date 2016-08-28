@@ -220,6 +220,9 @@ class WAK_Facebook_Login {
     return $response->access_token;
   }
 
+  /**
+   * Add assets to wp-login.php
+   */
   public function login_form_head() {
     echo '<link rel="stylesheet" type="text/css" href="'.WAK_PLUGIN_DIR_URL.'inc/social/facebook/assets/css/facebook_login.css" />';
     echo '<script>
@@ -245,6 +248,9 @@ class WAK_Facebook_Login {
     echo '<script src="'.WAK_PLUGIN_DIR_URL.'inc/social/facebook/assets/js/facebook_login.js"></script>';
   }
 
+  /**
+   * Add login button to wp-login.php 
+   */
   public function login_form_button() {
 
     $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');

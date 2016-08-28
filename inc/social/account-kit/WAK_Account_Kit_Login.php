@@ -5,12 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'WAK_ACCOUNT_KIT_META_KEY', '_jwt_account_kit_userid' );
 
 class WAK_Account_Kit_Login {
-	private $token;
-	private $user_id;
-	private $access_token;
+  private $token;
+  private $user_id;
+  private $access_token;
 
-	function __construct() {
-		add_filter( 'wak_login_method_account_kit', array( $this, 'handle_authentication' ), 10, 2 );
+  function __construct() {
+    add_filter( 'wak_login_method_account_kit', array( $this, 'handle_authentication' ), 10, 2 );
 
     if( is_admin() ) {
       include('settings/wak-settings-account-kit.php');
@@ -22,6 +22,13 @@ class WAK_Account_Kit_Login {
     }
   }
 
+  /**
+   * Handle account-kit authentication
+   *
+   * @param $return
+   * @param $request
+   * @return array|bool|WP_Error
+   */
   public function handle_authentication($return, $request) {
     if( ! get_option('wak_account_kit_active') ) {
       return $return;
@@ -37,13 +44,18 @@ class WAK_Account_Kit_Login {
 
   }
 
+  /**
+   * Create the JSON Web Token to authenticate via JWT-Endpoint
+   *
+   * @return array|bool|WP_Error
+   */
   public function create_jwt_token() {
-		$token_app_id = get_option('wak_account_kit_app_id');
+    $token_app_id = get_option('wak_account_kit_app_id');
     if( empty($token_app_id) ) {
       return new WP_Error('app_id_missing', __('Account-Kit app id is missing', 'wp-authentication-kit'));
     }
 
-		$token_app_secret = get_option('wak_account_kit_app_secret');
+    $token_app_secret = get_option('wak_account_kit_app_secret');
     if( empty($token_app_secret) ) {
       return new WP_Error('app_id_missing', __('Account-Kit app secret is missing', 'wp-authentication-kit'));
     }
@@ -65,6 +77,11 @@ class WAK_Account_Kit_Login {
     return $jwt_functions->create_token($this->user_id);
   }
 
+  /**
+   * Check identity via account-kit API
+   *
+   * @return bool|WP_Error
+   */
   private function check_identity() {
     if( $this->token == null ) {
       return new WP_Error('no_token_or_code', __('No token or code available', 'wp-authentication-kit'));
@@ -84,6 +101,11 @@ class WAK_Account_Kit_Login {
     return true;
   }
 
+  /**
+   * Check if user exists or create new one
+   *
+   * @return bool|WP_Error
+   */
   private function check_user_status() {
     $user = get_users(array('meta_key' => WAK_ACCOUNT_KIT_META_KEY, 'meta_value' => $this->user_id, 'fields' => 'ID'));
 
@@ -132,6 +154,9 @@ class WAK_Account_Kit_Login {
     }
   }
 
+  /**
+   * Load assets on wp-login.php
+   */
   public function login_form_head() {
     echo '<script src="https://sdk.accountkit.com/en_US/sdk.js"></script>';
     echo '<script>
@@ -149,6 +174,10 @@ class WAK_Account_Kit_Login {
     echo '<link rel="stylesheet" type="text/css" href="'.WAK_PLUGIN_DIR_URL.'inc/social/account-kit/assets/css/account_kit_login.css" />';
   }
 
+
+  /**
+   * Add login buttons to wp-login.php
+   */
   public function login_form_button() {
 
     echo '<input type="hidden" name="token" id="token" />';
