@@ -24,7 +24,7 @@ function phone_btn_onclick(redirect) {
 
 
 // email form submission handler
-function email_btn_onclick() {
+function email_btn_onclick(redirect) {
   account_kit_redirect = redirect;
   AccountKit.login('EMAIL', {}, loginCallback);
 }

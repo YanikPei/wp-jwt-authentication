@@ -180,11 +180,6 @@ class WAK_Account_Kit_Login {
    */
   public function login_form_button() {
 
-    echo '<input type="hidden" name="token" id="token" />';
-    echo '<input type="hidden" name="method" id="method" value="account_kit" />';
-    echo '<input type="hidden" name="set_wp_cookie" value="true" />';
-    echo '<input type="hidden" name="redirect_to" value="'.get_bloginfo('url').'" />';
-
     if( get_option('wak_account_kit_phone_button') ) {
       echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=account_kit&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');">'.__('Login via SMS', 'wp-authentication-kit').'</a><br />';
     }
