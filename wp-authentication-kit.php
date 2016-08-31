@@ -75,6 +75,15 @@ class WP_Authentication_Kit {
     if( empty(get_option('jwt_secret')) ) {
       add_action( 'admin_notices', array($this, 'required_jwt_secret') );
     }
+
+    add_action('login_head', array($this, 'login_errors'));
+  }
+
+  function login_errors() {
+      global $error;
+
+      if( !empty($_GET['error']) && 'true' == $_GET['error'] )
+        $error  = $_GET['msg'];
   }
 
   /**
