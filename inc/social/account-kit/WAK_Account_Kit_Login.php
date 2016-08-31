@@ -186,11 +186,11 @@ class WAK_Account_Kit_Login {
     echo '<input type="hidden" name="redirect_to" value="'.get_bloginfo('url').'" />';
 
     if( get_option('wak_account_kit_phone_button') ) {
-      echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick();">'.__('Login via SMS', 'wp-authentication-kit').'</a><br />';
+      echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=account_kit&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');">'.__('Login via SMS', 'wp-authentication-kit').'</a><br />';
     }
 
     if( get_option('wak_account_kit_email_button') ) {
-      echo '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick();">'.__('Login via Email', 'wp-authentication-kit').'</a><br />';
+      echo '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=account_kit&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');">'.__('Login via Email', 'wp-authentication-kit').'</a><br />';
     }
 
   }
