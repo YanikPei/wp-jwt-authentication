@@ -46,6 +46,10 @@ class WAK_Facebook_Login {
       add_action( 'login_form', array($this, 'login_form_button') );
     }
 
+    // add shortcode
+    add_shortcode( 'wak_facebook_login', array( $this, 'login_button_shortcode' ) );
+    add_action( 'wp_footer', array( $this, 'add_script_to_footer' ) );
+
   }
 
   /**
@@ -249,14 +253,58 @@ class WAK_Facebook_Login {
   }
 
   /**
+   * Generate login button
+   *
+   * @return string
+   */
+  function generate_button() {
+    $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');
+
+    return '<a href="#" onclick="fbLoginButton(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=facebook&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');" class="button-secondary facebook-btn">'.__('Login with facebook', 'wp-authentication-kit').'</a><br />';
+  }
+
+  /**
    * Add login button to wp-login.php 
    */
   public function login_form_button() {
 
-    $redirect_uri = urlencode(get_bloginfo('url') . '/wp-json/wp-jwt/v1/login?method=facebook');
+    echo $this->generate_button();
 
-    echo '<a href="#" onclick="fbLoginButton(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=facebook&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');" class="button-secondary facebook-btn">'.__('Login with facebook', 'wp-authentication-kit').'</a><br />';
+  }
 
+  /**
+   * Register login button
+   *
+   * @return string
+   */
+  public function login_button_shortcode() {
+    wp_enqueue_script('wak-facebook-login-js', WAK_PLUGIN_DIR_URL.'inc/social/facebook/assets/js/facebook_login.js', array('jquery'), '1.0', true);
+    wp_enqueue_style( 'wak-facebook-login-css', WAK_PLUGIN_DIR_URL.'inc/social/facebook/assets/css/facebook_login.css' );
+
+    return $this->generate_button();
+  }
+
+  public function add_script_to_footer() {
+    echo '<script>
+              (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/'.get_locale().'/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, "script", "facebook-jssdk"));
+
+
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : "'.get_option('wak_fb_app_id').'",
+            cookie     : true,
+            xfbml      : true,
+            version    : "v2.2"
+          });
+
+        };
+          </script>';
   }
 
 }
