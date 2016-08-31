@@ -79,16 +79,16 @@ class JWT_Login_Endpoint {
       wp_set_auth_cookie( $return['userid'], true );
     }
 
-    if( isset($request['redirect_to']) && !is_wp_error($return) ) {
-      $location = $request['redirect_to'];
-
-      if( is_wp_error($return) ) {
+    if( isset($request['redirect_to']) ) {
+      if(is_wp_error($return)) {
+        $location = wp_login_url();
         $location .= '?error=true&msg='.urlencode($return->get_error_message());
+      } else {
+        $location = $request['redirect_to'];
       }
 
       wp_redirect($location);
       exit;
-      return;
     }
 
     return $return;
