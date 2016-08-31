@@ -20,6 +20,10 @@ class WAK_Account_Kit_Login {
       add_action('login_head', array($this, 'login_form_head'));
       add_action( 'login_form', array($this, 'login_form_button') );
     }
+
+    add_action( 'wp_footer', array( $this, 'add_script_to_footer' ) );
+    add_shortcode( 'wak_account_kit_phone', array( $this, 'login_phone_shortcode' ) );
+    add_shortcode( 'wak_account_kit_email', array( $this, 'login_email_shortcode' ) );
   }
 
   /**
@@ -154,11 +158,15 @@ class WAK_Account_Kit_Login {
     }
   }
 
+  private function get_account_kit_sdk_url() {
+    return 'https://sdk.accountkit.com/'.get_locale().'/sdk.js';
+  }
+
   /**
    * Load assets on wp-login.php
    */
   public function login_form_head() {
-    echo '<script src="https://sdk.accountkit.com/en_US/sdk.js"></script>';
+    echo '<script src="' . $this->get_account_kit_sdk_url() . '"></script>';
     echo '<script>
       AccountKit_OnInteractive = function(){
         AccountKit.init(
@@ -174,6 +182,24 @@ class WAK_Account_Kit_Login {
     echo '<link rel="stylesheet" type="text/css" href="'.WAK_PLUGIN_DIR_URL.'inc/social/account-kit/assets/css/account_kit_login.css" />';
   }
 
+  /**
+   * Generate phone login button
+   *
+   * @return string
+   */
+  public function generate_login_phone_button() {
+    return '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=account_kit&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');">'.__('Login via SMS', 'wp-authentication-kit').'</a>';
+  }
+
+
+  /**
+   * Generate email login button
+   *
+   * @return string
+   */
+  public function generate_login_email_button() {
+    return '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=account_kit&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');">'.__('Login via Email', 'wp-authentication-kit').'</a>';
+  }
 
   /**
    * Add login buttons to wp-login.php
@@ -181,13 +207,43 @@ class WAK_Account_Kit_Login {
   public function login_form_button() {
 
     if( get_option('wak_account_kit_phone_button') ) {
-      echo '<a href="#" class="button-secondary account-kit-btn" onclick="phone_btn_onclick(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=account_kit&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');">'.__('Login via SMS', 'wp-authentication-kit').'</a><br />';
+      echo $this->generate_login_phone_button() . '<br />';
     }
 
     if( get_option('wak_account_kit_email_button') ) {
-      echo '<a href="#" class="button-secondary account-kit-btn" onclick="email_btn_onclick(\''.get_bloginfo('url').'/wp-json/wp-jwt/v1/login?method=account_kit&redirect_to='.urlencode(get_bloginfo('url')).'&set_wp_cookie=true\');">'.__('Login via Email', 'wp-authentication-kit').'</a><br />';
+      echo $this->generate_login_email_button() . '<br />';
     }
 
+  }
+
+  public function login_phone_shortcode() {
+    wp_enqueue_script('wak-account-kit-sdk-js', $this->get_account_kit_sdk_url(), array('jquery'), '1.0', true);
+    wp_enqueue_script('wak-account-kit-login-js', WAK_PLUGIN_DIR_URL.'inc/social/account-kit/assets/js/account_kit_login.js', array('jquery', 'wak-account-kit-sdk-js'), '1.0', true);
+    wp_enqueue_style( 'wak-account-kit-login-css', WAK_PLUGIN_DIR_URL.'inc/social/account-kit/assets/css/account_kit_login.css' );
+
+    return $this->generate_login_phone_button();
+  }
+
+  public function login_email_shortcode() {
+    wp_enqueue_script('wak-account-kit-sdk-js', $this->get_account_kit_sdk_url(), array('jquery'), '1.0', true);
+    wp_enqueue_script('wak-account-kit-login-js', WAK_PLUGIN_DIR_URL.'inc/social/account-kit/assets/js/account_kit_login.js', array('jquery', 'wak-account-kit-sdk-js'), '1.0', true);
+    wp_enqueue_style( 'wak-account-kit-login-css', WAK_PLUGIN_DIR_URL.'inc/social/account-kit/assets/css/account_kit_login.css' );
+
+    return $this->generate_login_email_button();
+  }
+
+  public function add_script_to_footer() {
+    echo '<script>
+      AccountKit_OnInteractive = function(){
+        AccountKit.init(
+          {
+            appId:'.get_option('wak_account_kit_app_id').',
+            state:"{{csrf}}",
+            version:"v1.0"
+          }
+        );
+      };
+    </script>';
   }
 
 }
